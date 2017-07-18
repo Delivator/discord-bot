@@ -46,3 +46,8 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
+# Windows desktop.ini
+desktop.ini
+
+# Ignore config/settings.json
+config/settings.json
