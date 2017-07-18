@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "Discord bot written in JavaScript (Node.js) using the discord.js library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Delivator/discord-bot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Delivator.me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Delivator/discord-bot/issues"
+  },
+  "homepage": "https://github.com/Delivator/discord-bot#readme"
+}
