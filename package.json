@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/Delivator/discord-bot/issues"
   },
-  "homepage": "https://github.com/Delivator/discord-bot#readme"
+  "homepage": "https://github.com/Delivator/discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.1.0",
+    "opusscript": "0.0.3",
+    "ffmpeg-binaries": "*"
+  }
 }
