@@ -4,6 +4,7 @@ const settings = require("./config/settings.json");
 
 client.on("ready", () => {
   console.log(`Bot ready! Logged in as ${client.user.tag}\\${client.user.id}`);
+  client.user.setGame("https://delivator.me/x");
 });
 
 client.on("message", message => {
@@ -22,8 +23,14 @@ client.on("message", message => {
         channel.send("Pong!")
           .then(msg => {
             let secondTime = msg.createdTimestamp;
-            msg.edit(`There is a **${secondTime - startTime}ms** delay.`)
+            msg.edit(`It took **${secondTime - startTime}ms** to send this message.\n`+
+                     `Client ping: **${client.ping}ms**.`)
           });
+        break;
+      case "playing":
+        let playingText = content.substring(settings.cmd_prefix.length + 8);
+        client.user.setGame(playingText, "");
+        console.log("Playing text set to: " + playingText);
         break;
       default:
 
