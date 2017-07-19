@@ -1,41 +1,21 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const settings = require("./config/settings.json");
+require("./util/eventLoader")(client);
 
-client.on("ready", () => {
-  console.log(`Bot ready! Logged in as ${client.user.tag}\\${client.user.id}`);
-  client.user.setGame("https://delivator.me/x");
-});
-
-client.on("message", message => {
-  var author = message.author,
-      channel = message.channel,
-      content = message.content,
-      guild = message.guild;
-
-  if (content.startsWith(settings.cmd_prefix) && author != client.user) {
-    let cmd = content.substring(settings.cmd_prefix.length).split(" ")[0].toLowerCase(),
-        args = content.split(" ").slice(1);
-    console.log(`Command ${cmd} used by ${author.tag}`);
-    switch (cmd) {
-      case "ping":
-        let startTime = message.createdTimestamp;
-        channel.send("Pong!")
-          .then(msg => {
-            let secondTime = msg.createdTimestamp;
-            msg.edit(`It took **${secondTime - startTime}ms** to send this message.\n`+
-                     `Client ping: **${client.ping}ms**.`)
-          });
-        break;
-      case "playing":
-        let playingText = content.substring(settings.cmd_prefix.length + 8);
-        client.user.setGame(playingText, "");
-        console.log("Playing text set to: " + playingText);
-        break;
-      default:
-
-    }
-  }
-});
+var reload = (message, cmd) => {
+	delete require.cache[require.resolve('./commands/' + cmd)];
+	try {
+		let cmdFile = require('./commands/' + cmd);
+	} catch (err) {
+		message.channel.send(`Problem loading ${cmd}: ${err}`).then(
+			response => response.delete(5000).catch(error => console.log(error.stack))
+		).catch(error => console.log(error.stack));
+	}
+	message.channel.send(`${cmd} reload was a success!`).then(
+		response => response.delete(5000).catch(error => console.log(error.stack))
+	).catch(error => console.log(error.stack));
+};
+exports.reload = reload;
 
 client.login(settings.token);
