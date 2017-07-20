@@ -1,8 +1,6 @@
 const settings = require("../config/settings.json");
 
 module.exports = message => {
-  console.log(message.client.user.id);
-
   const author = message.author,
         channel = message.channel,
         content = message.content,
@@ -20,5 +18,4 @@ module.exports = message => {
       console.log(`Command ${cmd} failed\n${e.stack}`);
     }
   }
-
 };
