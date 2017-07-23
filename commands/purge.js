@@ -1,4 +1,4 @@
-exports.run = function(client, message, args) {
+exports.run = (client, message, args) => {
   let messageCount = parseInt(args[0]) + 1;
   message.channel.fetchMessages({limit: messageCount})
     .then(messages => message.channel.bulkDelete(messages));
@@ -13,6 +13,6 @@ exports.conf = {
 
 exports.help = {
   name: "purge",
-  description: "Purges a specified amount of messages from the given channel.",
+  description: "Purges a specified amount of messages from the channel it has been executed in.",
   usage: "purge <number>"
 };

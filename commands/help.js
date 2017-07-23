@@ -1,6 +1,6 @@
 const settings = require("../config/settings.json");
 
-exports.run = function(client, message, args) {
+exports.run = (client, message, args) => {
   if (!args[0]) {
     const commandNames = Array.from(client.commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
@@ -11,7 +11,7 @@ exports.run = function(client, message, args) {
     let command = args[0];
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      message.channel.send(`== ${command.help.name} ==\n\n${command.help.description}\n\nUsage::${command.help.usage}`, { code: "asciidoc" });
+      message.channel.send(`== ${command.help.name} ==\n\n${command.help.description}\n\nUsage :: ${command.help.usage}`, { code: "asciidoc" });
     }
   }
 };
@@ -26,5 +26,5 @@ exports.conf = {
 exports.help = {
   name: "help",
   description: "Displays all available commands for your permission level.",
-  usage: "help <help>"
+  usage: "help [command]"
 };

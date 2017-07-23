@@ -1,4 +1,4 @@
-exports.run = function(client, message) {
+exports.run = (client, message) => {
   let startTime = message.createdTimestamp;
   message.channel.send("Pong!")
     .then(msg => {
