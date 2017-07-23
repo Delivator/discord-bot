@@ -24,6 +24,7 @@
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "*",
     "got": "^7.1.0",
+    "moment": "^2.18.1",
     "opusscript": "0.0.3"
   }
 }

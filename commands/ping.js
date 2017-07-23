@@ -1,4 +1,4 @@
-exports.run = function(client, message, args) {
+exports.run = function(client, message) {
   let startTime = message.createdTimestamp;
   message.channel.send("Pong!")
     .then(msg => {
@@ -7,3 +7,16 @@ exports.run = function(client, message, args) {
                `Client ping: **${client.ping}ms**.`)
     });
 };
+
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: 0
+}
+
+exports.help = {
+  name: "ping",
+  description: "Ping command. Thats all. Nothing special.",
+  usage: "ping"
+}
