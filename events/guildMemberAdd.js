@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = member => {
   let guild = member.guild;
-  let logChannel = member.client.channels.find("name", "admin-log");
+  let logChannel = member.client.channels.find("name", "mod-log");
   guild.defaultChannel.send(`Welcome <@${member.user.id}> to the \`${guild.name}\` server!`);
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${member.user.tag}\n`+

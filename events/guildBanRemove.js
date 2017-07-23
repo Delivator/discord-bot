@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = (guild, user) => {
-  let logChannel = guild.client.channels.find("name", "admin-log");
+  let logChannel = guild.client.channels.find("name", "mod-log");
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${user.tag}\n`+
                         `:id: ID: ${user.id}`;
