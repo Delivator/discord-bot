@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Discord bot written in JavaScript (Node.js) using the discord.js library",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "*",
     "got": "^7.1.0",
+    "moment": "^2.18.1",
     "opusscript": "0.0.3"
   }
 }
