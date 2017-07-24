@@ -20,6 +20,9 @@
     "url": "https://github.com/Delivator/discord-bot/issues"
   },
   "homepage": "https://github.com/Delivator/discord-bot#readme",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "*",

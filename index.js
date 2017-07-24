@@ -2,12 +2,10 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const settings = require("./config/settings.json");
 const fs = require("fs");
-const moment = require("moment");
+const log = require("./util/logFunction").log;
 require("./util/eventLoader")(client);
 
-const log = message => {
-  console.log(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${message}`);
-};
+client.startTime = new Date().getTime();
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
@@ -16,7 +14,7 @@ fs.readdir("./commands/", (err, files) => {
   log(`Loading a total of ${files.length} commands.`)
   files.forEach(f => {
     let props = require(`./commands/${f}`);
-    log(`Loading Command: ${props.help.name}. 👌`);
+    log(`Loading Command: ${props.help.name}`);
     client.commands.set(props.help.name, props);
     props.conf.aliases.forEach(alias => {
       client.aliases.set(alias, props.help.name);
@@ -37,6 +35,7 @@ client.reload = command => {
       cmd.conf.aliases.forEach(alias => {
         client.aliases.set(alias, cmd.help.name);
       });
+      log(`Reloaded Command: ${command}`);
       resolve();
     } catch (e) {
       reject(e);
