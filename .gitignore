@@ -51,3 +51,4 @@ desktop.ini
 
 # Ignore config/settings.json
 config/settings.json
+util/db.json

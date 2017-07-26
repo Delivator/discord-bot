@@ -3,5 +3,6 @@
   "prefix": "!",
   "ownerid": "OWNERIDHERE",
   "modrolename": "DISCORD_MOD_ROLE_NAME",
-  "adminrolename": "DISCORD_ADMIN_ROLE_NAME"
+  "adminrolename": "DISCORD_ADMIN_ROLE_NAME",
+  "autopause": "Boolean (true/false); if the music bot should pause, when he is alone in a channel."
 }
