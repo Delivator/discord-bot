@@ -1,12 +1,12 @@
-const ytdl = require("ytdl-core");
+const youtubedl = require("youtube-dl");
 
 var servers = {};
 
 function play(connection, message) {
   let server = servers[message.guild.id];
+  server.dispatcher = connection.playStream(youtubedl(server.queue[0].url, ["-x"]));
 
-  server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: "audioonly"}));
-  message.channel.send(`[Music] Now playing: \`${server.queue[0]}\``);
+  message.channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
 
   server.dispatcher.on("end", () => {
     server.queue.shift();

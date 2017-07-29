@@ -1,5 +1,6 @@
 {
   "token": "YOUR_TOKEN_HERE",
+  "youtubeApiKey": "YOUT_YOUTUBE_API_KEY",
   "prefix": "!",
   "ownerid": "OWNERIDHERE",
   "modrolename": "DISCORD_MOD_ROLE_NAME",

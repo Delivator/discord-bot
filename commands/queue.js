@@ -8,10 +8,9 @@ exports.run = (client, message, args) => {
     let queueList = "";
     if (musicPlayer.servers[message.guild.id].queue[0]) {
       for (var i = 0; i < queue.length; i++) {
-        queueList += `**${i + 1}.** \`${queue[i]}\`\n`;
+        queueList += `**${i + 1}.** \`${queue[i].title}\`\n`;
       }
     }
-    // message.channel.send(`[Music] Queue: \`${musicPlayer.servers[message.guild.id].queue.join("`, `")}\``);
     message.channel.send(`[Music] Queue: \n${queueList}`);
   }
 };

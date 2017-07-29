@@ -3,13 +3,24 @@ const got = require("got");
 
 const base = "http://pr0gramm.com/api";
 
-function buildUrl(mediaUrl) {
-  let fileExt = mediaUrl.split(".")[mediaUrl.split(".").length - 1];
+function getFileType(string) {
+  let fileExt = string.split(".")[string.split(".").length - 1];
   const imageExt = ["jpg", "jpeg", "png", "gif"];
   const videoExt = ["mp4", "webm"];
   if (imageExt.includes(fileExt)) {
-    return "http://img.pr0gramm.com/" + mediaUrl;
+    return "image";
   } else if (videoExt.includes(fileExt)) {
+    return "video";
+  } else {
+    return "Invalid file type";
+  }
+}
+
+function buildUrl(mediaUrl) {
+  let fileType = getFileType(mediaUrl);
+  if (fileType === "image") {
+    return "http://img.pr0gramm.com/" + mediaUrl;
+  } else if (fileType === "video") {
     return "http://vid.pr0gramm.com/" + mediaUrl;
   } else {
     return "Invalid file extension.";
@@ -65,6 +76,7 @@ function getPostInfo(postID, callback) {
       postInfo.created = post.created;
       postInfo.thumb = "http://thumb.pr0gramm.com/" + post.thumb;
       postInfo.mediaUrl = buildUrl(post.image);
+      postInfo.fileType = getFileType(postInfo.mediaUrl);
       postInfo.user = post.user;
 
       if (post.fullsize !== "") {
