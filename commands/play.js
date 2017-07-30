@@ -1,6 +1,5 @@
 const settings = require("../config/settings.json");
 const musicPlayer = require("../util/musicPlayer");
-const youtubedl = require("youtube-dl");
 const ytSearch = require("youtube-search");
 
 function getYoutubeID(url) {
@@ -43,13 +42,20 @@ exports.run = (client, message, args) => {
       };
       let server = musicPlayer.servers[message.guild.id];
       if (videoID) {
-        youtubedl.getInfo(videoID, function(err, info) {
-          if (err) throw err;
+        const options = {
+          maxResults: 1,
+          part: "snippet",
+          type: "video",
+          key: settings.youtubeApiKey
+        };
+        ytSearch(videoID, options, function(err, results) {
+          if (err) return console.log(err);
+          let video = results[0];
           server.queue.push({
-            url: `https://www.youtube.com/watch?v=${videoID}`,
-            title: info.title
+            url: `https://www.youtube.com/watch?v=${video.id}`,
+            title: video.title
           });
-          message.channel.send(`[Music] \`${info.title}\` \`(https://www.youtube.com/watch?v=${videoID})\` has been added to the queue.`);
+          message.channel.send(`[Music] \`${video.title}\` \`(https://www.youtube.com/watch?v=${video.id})\` has been added to the queue.`);
           if (!message.guild.voiceConnection) message.member.voiceChannel.join()
             .then(connection => {
               musicPlayer.play(connection, message);
