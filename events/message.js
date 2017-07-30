@@ -9,7 +9,7 @@ module.exports = message => {
   let client = message.client;
   if (message.author.bot) return;
   if (!message.content.startsWith(settings.prefix)) return;
-  let command = message.content.split(" ")[0].slice(settings.prefix.length);
+  let command = message.content.split(" ")[0].toLowerCase().slice(settings.prefix.length);
   let args = message.content.split(" ").slice(1);
   let perms = client.elevation(message);
   let cmd;
