@@ -94,12 +94,12 @@ exports.run = (client, message, args) => {
             .then(async (msg) => {
               switch (results.length) {
                 case 3:
-                  for (emoji of ["1⃣", "2⃣", "3⃣"]) {
+                  for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
                     await msg.react(emoji);
                   }
                   break;
                 case 2:
-                  for (emoji of ["1⃣", "2⃣"]) {
+                  for (emoji of ["1⃣", "2⃣", "❌"]) {
                     await msg.react(emoji);
                   }
                   break;
@@ -110,6 +110,10 @@ exports.run = (client, message, args) => {
                 {time: 30000}
               );
               collector.on("collect", r => {
+                if (r.emoji.name === "❌") {
+                  msg.clearReactions();
+                  msg.edit(`[Music] Search canceld.`);
+                }
                 let vote = getVote(r.emoji.name);
                 if (vote) {
                   collector.stop();
