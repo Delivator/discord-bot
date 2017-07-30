@@ -92,7 +92,7 @@ exports.run = (client, message, args) => {
               });
             return;
           }
-          let msgText = "[Music] select from one of the following results:\n";
+          let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
           for (var i = 0; i < results.length; i++) {
             msgText += `**${i + 1}.** ${results[i].title} \n`;
           }
@@ -135,6 +135,9 @@ exports.run = (client, message, args) => {
                       musicPlayer.play(connection, message);
                     });
                 }
+              });
+              collector.on("end", r => {
+                msg.clearReactions();
               });
             });
         });

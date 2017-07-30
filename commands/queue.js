@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
         queueList += `**${i + 1}.** \`${queue[i].title}\`\n`;
       }
     }
-    message.channel.send(`[Music] Queue: \n${queueList}`);
+    message.channel.send(`[Music] Queue: \n${queueList}`, {split: {char: "\n"}});
   }
 };
 
