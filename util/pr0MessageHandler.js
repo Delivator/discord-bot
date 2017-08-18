@@ -14,7 +14,7 @@ exports.run = (message) => {
         let text = `:thumbsup: **Upvotes:** ${postInfo.up} `+
                    `:thumbsdown: **Downvotes:** ${postInfo.down}\n`+
                    `:cucumber: **Benis:** ${postInfo.up - postInfo.down}\n`+
-                   `:bust_in_silhouette: **Uploader:** ${postInfo.user}\n`+
+                   `:bust_in_silhouette: **Uploader:** [${postInfo.user}](http://pr0gramm.com/user/"${postInfo.user})\n`+
                    `:hash: **Tags (${postInfo.tags.length})**: ${postInfo.topTags}`;
         let links = `:link: **Post-URL:**\nhttp://pr0gramm.com/new/${postInfo.id}\n`+
                     `:frame_photo:️ **Media-URL:**\n${postInfo.mediaUrl}\n`;
