@@ -1,5 +1,6 @@
 const settings = require("../config/settings.json");
 const musicPlayer = require("../util/musicPlayer");
+const musicDownloader = require("../util/musicDownloader");
 const ytSearch = require("youtube-search");
 
 function getYoutubeID(url) {
@@ -51,15 +52,20 @@ exports.run = (client, message, args) => {
         ytSearch(videoID, options, function(err, results) {
           if (err) return console.log(err);
           let video = results[0];
-          server.queue.push({
-            url: `https://www.youtube.com/watch?v=${video.id}`,
-            title: video.title
-          });
-          message.channel.send(`[Music] \`${video.title}\` \`(https://www.youtube.com/watch?v=${video.id})\` has been added to the queue.`);
-          if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-            .then(connection => {
-              musicPlayer.play(connection, message);
+          let url = `https://www.youtube.com/watch?v=${video.id}`;
+          musicDownloader.downloadSong(url, function(callback) {
+            if (callback === false) return(message.channel.send("Error while downloading file."));
+            server.queue.push({
+              url: url,
+              title: video.title,
+              file: callback
             });
+            message.channel.send(`[Music] \`${video.title}\` \`(https://www.youtube.com/watch?v=${video.id})\` has been added to the queue.`);
+            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+              .then(connection => {
+                musicPlayer.play(connection, message);
+              });
+          });
         });
       } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
         server.queue.push({
@@ -81,15 +87,20 @@ exports.run = (client, message, args) => {
         ytSearch(args.join(" "), options, function(err, results) {
           if (err) return console.log(err);
           if (results.length === 1) {
-            message.channel.send(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
-            server.queue.push({
-              url: `https://www.youtube.com/watch?v=results[0]`,
-              title: results[0].title
-            });
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-              .then(connection => {
-                musicPlayer.play(connection, message);
+            let url = `https://www.youtube.com/watch?v=${results[0].id}`;
+            musicDownloader.downloadSong(url, function(callback) {
+              if (callback === false) return(message.channel.send("Error while downloading file."));
+              server.queue.push({
+                url: url,
+                title: results[0].title,
+                file: callback
               });
+              message.channel.send(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
+              if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                .then(connection => {
+                  musicPlayer.play(connection, message);
+                });
+            });
             return;
           }
           let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
@@ -124,16 +135,21 @@ exports.run = (client, message, args) => {
                 if (vote) {
                   collector.stop();
                   let video = results[vote - 1];
+                  let url = `https://www.youtube.com/watch?v=${video.id}`;
                   msg.clearReactions();
-                  msg.edit(`[Music] \`${video.title}\` \`(https://www.youtube.com/watch?v=${video.id})\` has been added to the queue.`);
-                  server.queue.push({
-                    url: `https://www.youtube.com/watch?v=${video.id}`,
-                    title: video.title
-                  });
-                  if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                    .then(connection => {
-                      musicPlayer.play(connection, message);
+                  musicDownloader.downloadSong(url, function(callback) {
+                    if (callback === false) return(message.channel.send("Error while downloading file."));
+                    server.queue.push({
+                      url: url,
+                      title: video.title,
+                      file: callback
                     });
+                    msg.edit(`[Music] \`${video.title}\` \`(${url})\` has been added to the queue.`);
+                    if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                      .then(connection => {
+                        musicPlayer.play(connection, message);
+                      });
+                  });
                 }
               });
               collector.on("end", r => {

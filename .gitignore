@@ -52,11 +52,11 @@ desktop.ini
 # Ignore config/settings.json
 config/settings.json
 
-# Database file
-util/db.json
-
 # ESLint file
 .eslintrc.json
 
 # VSCode folder
 .vscode/
+
+# Cache folder
+.cache/

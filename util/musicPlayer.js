@@ -1,10 +1,8 @@
-const youtubedl = require("youtube-dl");
-
 var servers = {};
 
 function play(connection, message) {
   let server = servers[message.guild.id];
-  server.dispatcher = connection.playStream(youtubedl(server.queue[0].url, ["-x"]));
+  server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`);
 
   message.channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
 
