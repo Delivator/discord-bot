@@ -2,6 +2,7 @@ const settings = require("../config/settings.json");
 const musicPlayer = require("../util/musicPlayer");
 const musicDownloader = require("../util/musicDownloader");
 const ytSearch = require("youtube-search");
+const ytInfo = require("youtube-info");
 
 function getYoutubeID(url) {
   let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -43,28 +44,19 @@ exports.run = (client, message, args) => {
       };
       let server = musicPlayer.servers[message.guild.id];
       if (videoID) {
-        const options = {
-          maxResults: 1,
-          part: "snippet",
-          type: "video",
-          key: settings.youtubeApiKey
-        };
-        ytSearch(videoID, options, function(err, results) {
-          if (err) return console.log(err);
-          let video = results[0];
-          let url = `https://www.youtube.com/watch?v=${video.id}`;
+        ytInfo(videoID).then(videoInfo => {
+          let url = `https://www.youtube.com/watch?v=${videoInfo.videoId}`;
+          let title = videoInfo.title;
           musicDownloader.downloadSong(url, function(callback) {
-            if (callback === false) return(message.channel.send("Error while downloading file."));
+            if (callback === false) return(message.channel.send(`Error while downloading file.`));
             server.queue.push({
               url: url,
-              title: video.title,
+              title: title,
               file: callback
             });
-            message.channel.send(`[Music] \`${video.title}\` \`(https://www.youtube.com/watch?v=${video.id})\` has been added to the queue.`);
+            message.channel.send(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-              .then(connection => {
-                musicPlayer.play(connection, message);
-              });
+              .then(connection => { musicPlayer.play(connection, message); });
           });
         });
       } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {

@@ -27,6 +27,7 @@
     "moment": "^2.18.1",
     "opusscript": "0.0.3",
     "youtube-dl": "^1.11.1",
+    "youtube-info": "^1.1.1",
     "youtube-search": "^1.0.10"
   }
 }
