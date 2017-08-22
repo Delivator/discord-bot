@@ -1,3 +1,5 @@
+const log = require("../util/logFunction").log;
+
 module.exports = client => {
-  console.log(`Reconnecting at ${new Date()}`);
+  log(`Client reconnecting...`);
 };

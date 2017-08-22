@@ -1,3 +1,5 @@
+const log = require("../util/logFunction").log;
+
 module.exports = client => {
-  console.log(`You have been disconnected at ${new Date()}`);
+  log(`Client disconnected!`);
 };
