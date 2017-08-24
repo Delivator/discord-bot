@@ -1,17 +1,23 @@
+# Features
+
+Musicbot 🎵:
+
+- Reaction voting system for searches: ![Reaction Voting System](https://paste.click/ZoliAw)
+
 # Setup
 
 Requirements:
 
- * [Node.js](https://nodejs.org/en/download/) version 6.11.2 or higher
- * [FFmpeg](https://github.com/FFmpeg/FFmpeg) installed and added to PATH
+* [Node.js](https://nodejs.org/en/download/) version 6.11.2 or higher
+* [FFmpeg](https://github.com/FFmpeg/FFmpeg) installed and added to PATH
 
 Installation:
 
- * Clone or download this repository
- * Install the dependencies with npm install
- * Copy the `config/example_settings.json` file to `config/settings.json`
- * Edit the `config/settings.json` file
- * Start the bot by typing `node index.js` in the terminal or on windows by starting the `START.bat` file
+* Clone or download this repository
+* Install the dependencies with npm install
+* Copy the `config/example_settings.json` file to `config/settings.json`
+* Edit the `config/settings.json` file
+* Start the bot by typing `node index.js` in the terminal or on windows by starting the `START.bat` file
 
 Config:
 
