@@ -4,7 +4,7 @@ function play(connection, message) {
   let server = servers[message.guild.id];
   server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`);
 
-  message.channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
+  server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
 
   server.dispatcher.on("end", () => {
     server.queue.shift();

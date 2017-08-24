@@ -47,22 +47,26 @@ exports.run = (client, message, args) => {
         ytInfo(videoID).then(videoInfo => {
           let url = `https://www.youtube.com/watch?v=${videoInfo.videoId}`;
           let title = videoInfo.title;
-          musicDownloader.downloadSong(url, function(callback) {
-            if (callback === false) return(message.channel.send(`Error while downloading file.`));
-            server.queue.push({
-              url: url,
-              title: title,
-              file: callback
+          message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
+            musicDownloader.downloadSong(url, function(callback) {
+              if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
+              server.queue.push({
+                url: url,
+                title: title,
+                file: callback,
+                channel: message.channel
+              });
+              msg.edit(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
+              if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                .then(connection => { musicPlayer.play(connection, message); });
             });
-            message.channel.send(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-              .then(connection => { musicPlayer.play(connection, message); });
           });
         });
       } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
         server.queue.push({
           url: args[0],
-          title: args[0]
+          title: args[0],
+          channel: message.channel
         });
         message.channel.send(`[Music] \`${args[0]}\` has been added to the queue.`);
         if (!message.guild.voiceConnection) message.member.voiceChannel.join()
@@ -80,18 +84,21 @@ exports.run = (client, message, args) => {
           if (err) return console.log(err);
           if (results.length === 1) {
             let url = `https://www.youtube.com/watch?v=${results[0].id}`;
-            musicDownloader.downloadSong(url, function(callback) {
-              if (callback === false) return(message.channel.send("Error while downloading file."));
-              server.queue.push({
-                url: url,
-                title: results[0].title,
-                file: callback
-              });
-              message.channel.send(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
-              if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                .then(connection => {
-                  musicPlayer.play(connection, message);
+            message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
+              musicDownloader.downloadSong(url, function(callback) {
+                if (callback === false) return msg.edit("[Music] Error while downloading file.");
+                server.queue.push({
+                  url: url,
+                  title: results[0].title,
+                  file: callback,
+                  channel: message.channel
                 });
+                msg.edit(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
+                if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                  .then(connection => {
+                    musicPlayer.play(connection, message);
+                  });
+              });
             });
             return;
           }
@@ -101,19 +108,6 @@ exports.run = (client, message, args) => {
           }
           message.channel.send(msgText)
             .then(async (msg) => {
-              switch (results.length) {
-                case 3:
-                  for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
-                    await msg.react(emoji);
-                  }
-                  break;
-                case 2:
-                  for (emoji of ["1⃣", "2⃣", "❌"]) {
-                    await msg.react(emoji);
-                  }
-                  break;
-                default:
-              }
               const collector = msg.createReactionCollector(
                 (reaction, user) => user.id === message.author.id,
                 {time: 30000}
@@ -129,12 +123,14 @@ exports.run = (client, message, args) => {
                   let video = results[vote - 1];
                   let url = `https://www.youtube.com/watch?v=${video.id}`;
                   msg.clearReactions();
+                  msg.edit(`[Music] Downloading \`${url}\`...`);
                   musicDownloader.downloadSong(url, function(callback) {
-                    if (callback === false) return(message.channel.send("Error while downloading file."));
+                    if (callback === false) return msg.edit("[Music] Error while downloading file.");
                     server.queue.push({
                       url: url,
                       title: video.title,
-                      file: callback
+                      file: callback,
+                      channel: message.channel
                     });
                     msg.edit(`[Music] \`${video.title}\` \`(${url})\` has been added to the queue.`);
                     if (!message.guild.voiceConnection) message.member.voiceChannel.join()
@@ -147,6 +143,21 @@ exports.run = (client, message, args) => {
               collector.on("end", r => {
                 msg.clearReactions();
               });
+              switch (results.length) {
+                case 3:
+                  for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
+                    if (collector.ended) break;
+                    await msg.react(emoji);
+                  }
+                  break;
+                case 2:
+                  for (emoji of ["1⃣", "2⃣", "❌"]) {
+                    if (collector.ended) break;
+                    await msg.react(emoji);
+                  }
+                  break;
+                default:
+              }
             });
         });
       }
@@ -164,5 +175,5 @@ exports.conf = {
 exports.help = {
   name: "play",
   description: "Plays a song from a youtube link",
-  usage: "play <youtube-link>"
+  usage: "play <link>"
 };
