@@ -104,7 +104,7 @@ exports.run = (client, message, args) => {
           }
           let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
           for (var i = 0; i < results.length; i++) {
-            msgText += `**${i + 1}.** ${results[i].title} \n`;
+            msgText += `**${i + 1}.** ${results[i].title} \`https://www.youtube.com/watch?v=${results[0].id}\`\n`;
           }
           message.channel.send(msgText)
             .then(async (msg) => {

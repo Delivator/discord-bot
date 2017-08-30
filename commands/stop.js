@@ -5,11 +5,9 @@ exports.run = (client, message, args) => {
   let server = musicPlayer.servers[message.guild.id];
 
   if (message.guild.voiceConnection) {
-    for (var i = server.queue.length -1; i >= 0; i++) {
-      server.queue.splice(i, 1);
-    }
+    server.queue = [];
     server.dispatcher.end();
-    log("Queue cleard. Stopping the music bot.");
+    log("[Music] Queue cleard. Stopping the music bot.");
   }
 };
 
