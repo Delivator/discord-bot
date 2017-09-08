@@ -13,10 +13,10 @@ exports.conf = {
   guildOnly: false,
   aliases: [],
   permLevel: 0
-}
+};
 
 exports.help = {
   name: "ping",
   description: "Ping command. Thats all. Nothing special.",
   usage: "ping"
-}
+};
