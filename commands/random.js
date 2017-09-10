@@ -14,12 +14,12 @@ exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ["rng", "rndm"],
+  aliases: ["rng"],
   perLevel: 0
 };
 
 exports.help = {
   name: "random",
   description: "Generates a random number. Default 0-100.",
-  ussage: "random [number] [number]"
+  usage: "random [number] [number]"
 };
