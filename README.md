@@ -21,7 +21,7 @@ Installation:
 
 Config:
 
-* `token` Discord bot user token, can be found/created [here](https://discordapp.com/developers/applications/me)
+* `token` Discord bot user token, can be found/created [here](https://discordapp.com/developers/applications/me) ([Tutorial](https://gfycat.com/richblackandwhitecapeghostfrog))
 * `youtubeApiKey` Create a new Project, enable the YouTube Data API v3 and create and copy the API-Key from the [Google Developers Console](https://console.developers.google.com/projectselector/apis/api/youtube.googleapis.com/overview) page
 * `prefix` The prefix you want to use before every command. Eg. `"prefix": "+#"` would mean `+#help`
 * `ownerid` The discord user ID of the bot owner
