@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = member => {
   let guild = member.guild;
   let logChannel = member.client.channels.find("name", "mod-log");
-  guild.defaultChannel.send(`<@${member.user.id}> left the server! :sleepy:`);
+  guild.defaultChannel.send(`**${member.user.username}** left the server! :sleepy:`);
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${member.user.tag}\n`+
                         `:id: ID: ${member.user.id}`;
