@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 
 module.exports = member => {
-  let general = member.guild.client.channels.find("name", "general");
-  let logChannel = member.guild.client.channels.find("name", "mod-log");
+  let general = member.guild.channels.find("name", "general");
+  let logChannel = member.guild.channels.find("name", "mod-log");
   if (general) general.send(`**${member.user.tag}** left the server! :sleepy:`);
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${member.user.tag}\n`+
