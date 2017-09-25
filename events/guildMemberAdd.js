@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
 
 module.exports = member => {
-  let guild = member.guild;
-  let logChannel = member.client.channels.find("name", "mod-log");
-  guild.defaultChannel.send(`Welcome <@${member.user.id}> to the \`${guild.name}\` server!`);
+  let general = member.guild.client.channels.find("name", "general");
+  let logChannel = member.guild.client.channels.find("name", "mod-log");
+  if (general) general.send(`Welcome <@${member.user.id}> to the \`${member.guild.name}\` server!`);
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${member.user.tag}\n`+
                         `:id: ID: ${member.user.id}`;
@@ -13,8 +13,8 @@ module.exports = member => {
       .setDescription(description)
       .setThumbnail(member.user.displayAvatarURL)
       .setTimestamp(new Date());
-    logChannel.send({embed});
+    logChannel.send({ embed });
   } else {
-    console.log(`[Admin] [${guild.name}] User "${member.user.tag}" has joined the server!`);
+    console.log(`[Admin] [${member.guild.name}] User "${member.user.tag}" has joined the server!`);
   }
 };

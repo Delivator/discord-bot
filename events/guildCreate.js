@@ -1,3 +1,3 @@
 module.exports = guild => {
-  console.log(guild);
+  // console.log(guild);
 };

@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
 
 module.exports = member => {
-  let guild = member.guild;
-  let logChannel = member.client.channels.find("name", "mod-log");
-  guild.defaultChannel.send(`**${member.user.username}** left the server! :sleepy:`);
+  let general = member.guild.client.channels.find("name", "general");
+  let logChannel = member.guild.client.channels.find("name", "mod-log");
+  if (general) general.send(`**${member.user.tag}** left the server! :sleepy:`);
   if (logChannel) {
     const description = `:bust_in_silhouette: User: ${member.user.tag}\n`+
                         `:id: ID: ${member.user.id}`;
@@ -15,6 +15,6 @@ module.exports = member => {
       .setTimestamp(new Date());
     logChannel.send({ embed });
   } else {
-    console.log(`[Admin] [${guild.name}] User "${member.user.tag}" has left the server!`);
+    console.log(`[Admin] [${member.guild.name}] User "${member.user.tag}" has left the server!`);
   }
 };

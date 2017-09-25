@@ -19,7 +19,7 @@ module.exports = message => {
     cmd = client.commands.get(client.aliases.get(command));
   }
   if (cmd) {
-    if (perms < cmd.conf.permLevel) return;
+    if (perms < cmd.conf.permLevel) return message.channel.send("Insufficient permissions!");
     cmd.run(client, message, args, perms);
   }
 };
