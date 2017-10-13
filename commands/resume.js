@@ -7,7 +7,13 @@ exports.run = (client, message, args) => {
     if (!message.guild.voiceConnection) {
       message.channel.send(`[Music] Music bot not connected. Nothing to resume.`);
     } else {
-      musicPlayer.resume(message.guild.voiceConnection, message);
+      let connection = message.guild.voiceConnection;
+      if (connection.dispatcher && connection.dispatcher.paused) {
+        connection.dispatcher.resume();
+        message.channel.send(`[Music] Music resumed.`);
+      } else {
+        message.channel.send(`[Music] Music bot is not paused. Nothing to resume.`);
+      }
     }
   }
 };

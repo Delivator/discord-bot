@@ -11,32 +11,11 @@ function play(connection, message) {
     if (server.queue[0]) {
       play(connection, message);
     } else {
-      message.channel.send(`[Music] No song in the queue. Disconnecting.`);
+      message.channel.send(`[Music] No songs in the queue. Disconnecting.`);
       connection.disconnect();
     }
   });
 }
 
-function pause(connection, message) {
-  if (connection.dispatcher) {
-    connection.dispatcher.pause();
-    message.channel.send(`[Music] Music bot paused.`);
-  } else {
-    message.channel.send(`[Music] No music is playing. Nothing to pause.`);
-  }
-}
-
-function resume(connection, message) {
-  if (connection.dispatcher) {
-    connection.dispatcher.resume();
-    message.channel.send(`[Music] Music bot resumed.`);
-  } else {
-    message.channel.send(`[Music] No music is paused. Nothing to resume.`);
-  }
-}
-
 exports.servers = servers;
-
 exports.play = play;
-exports.pause = pause;
-exports.resume = resume;

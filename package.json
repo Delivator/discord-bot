@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Discord bot written in JavaScript (Node.js) using the discord.js library",
   "main": "index.js",
   "scripts": {
@@ -21,13 +21,14 @@
   },
   "homepage": "https://github.com/Delivator/discord-bot#readme",
   "dependencies": {
-    "discord.js": "^11.1.0",
-    "ffmpeg-binaries": "^3.2.2",
-    "got": "^7.1.0",
-    "moment": "^2.18.1",
-    "opusscript": "0.0.3",
-    "youtube-dl": "^1.11.1",
-    "youtube-info": "^1.1.1",
-    "youtube-search": "^1.0.10"
+    "discord.js": "*",
+    "ffmpeg-binaries": "*",
+    "got": "*",
+    "moment": "*",
+    "mp3-duration": "^1.0.10",
+    "opusscript": "0.0.4",
+    "youtube-dl": "*",
+    "youtube-info": "*",
+    "youtube-search": "*"
   }
 }
