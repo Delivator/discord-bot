@@ -1,8 +1,10 @@
 const settings = require("../config/settings.json");
 const musicPlayer = require("../util/musicPlayer");
 const musicDownloader = require("../util/musicDownloader");
-const ytSearch = require("youtube-search");
-const ytInfo = require("youtube-info");
+const YouTube = require("youtube-node");
+
+const youTube = new YouTube();
+youTube.setKey(settings.youtubeApiKey);
 
 function getYoutubeID(url) {
   let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -10,7 +12,17 @@ function getYoutubeID(url) {
   if (match && match[2].length == 11) {
     return match[2];
   } else {
-    return;
+    return false;
+  }
+}
+
+function getPlaylistID(url) {
+  let regExp = /^https?:\/\/.*(list=)([^#\&\?\/]*).*/;
+  let match = url.match(regExp);
+  if (match && match[2].length == 34) {
+    return match[2];
+  } else {
+    return false;
   }
 }
 
@@ -49,9 +61,10 @@ exports.run = (client, message, args) => {
   };
   let server = musicPlayer.servers[message.guild.id];
   if (videoID) {
-    ytInfo(videoID).then(videoInfo => {
-      let url = `https://www.youtube.com/watch?v=${videoInfo.videoId}`;
-      let title = videoInfo.title;
+    youTube.getById(videoID, function(error, result) {
+      if (error) return console.log(error);
+      let url = `https://www.youtube.com/watch?v=${result.items[0].id}`;
+      let title = result.items[0].snippet.title;
       message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
         musicDownloader.downloadSong(url, true, function(callback) {
           if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
@@ -86,21 +99,21 @@ exports.run = (client, message, args) => {
       });
     });
   } else {
-    ytSearch(args.join(" "), ytOptions, function(err, results) {
-      if (err) return console.log(err);
-      if (results.length === 1) {
-        let url = `https://www.youtube.com/watch?v=${results[0].id}`;
+      youTube.search(args.join(" "), 3, function(error, results) {
+      if (error) return console.log(error);
+      if (results.items.length === 1) {
+        let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
         message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
           musicDownloader.downloadSong(url, true, function(callback) {
             if (callback === false) return msg.edit("[Music] Error while downloading file.");
             server.queue.push({
               url: url,
-              title: results[0].title,
+              title: results.items[0].snippet.title,
               file: callback,
               channel: message.channel,
               requester: message.author.id
             });
-            msg.edit(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
+            msg.edit(`[Music] Found only one video. Added \`${results.items[0].snippet.title}\` to the queue.`);
             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
               .then(connection => {
                 musicPlayer.play(connection, message);
@@ -108,12 +121,12 @@ exports.run = (client, message, args) => {
           });
         });
         return;
-      } else if(results.length === 0) {
+      } else if(results.items.length === 0) {
         return message.channel.send(`[Music] No videos found.`);
       }
       let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
-      for (var i = 0; i < results.length; i++) {
-        msgText += `**${i + 1}.** ${results[i].title} \`https://www.youtube.com/watch?v=${results[i].id}\`\n`;
+      for (var i = 0; i < results.items.length; i++) {
+        msgText += `**${i + 1}.** ${results.items[i].snippet.title} \`https://www.youtube.com/watch?v=${results.items[i].id.videoId}\`\n`;
       }
       message.channel.send(msgText)
         .then(async (msg) => {
@@ -124,25 +137,25 @@ exports.run = (client, message, args) => {
           collector.on("collect", r => {
             if (r.emoji.name === "❌") {
               msg.clearReactions();
-              msg.edit(`[Music] Search canceld.`);
+              msg.edit(`[Music] Search cancelled.`);
             }
             let vote = getVote(r.emoji.name);
             if (vote) {
               collector.stop();
-              let video = results[vote - 1];
-              let url = `https://www.youtube.com/watch?v=${video.id}`;
+              let video = results.items[vote - 1];
+              let url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
               msg.clearReactions();
               msg.edit(`[Music] Downloading \`${url}\`...`);
               musicDownloader.downloadSong(url, true, function(callback) {
                 if (callback === false) return msg.edit("[Music] Error while downloading file.");
                 server.queue.push({
                   url: url,
-                  title: video.title,
+                  title: video.snippet.title,
                   file: callback,
                   channel: message.channel,
                   requester: message.author.id
                 });
-                msg.edit(`[Music] \`${video.title}\` \`(${url})\` has been added to the queue.`);
+                msg.edit(`[Music] \`${video.snippet.title}\` \`(${url})\` has been added to the queue.`);
                 if (!message.guild.voiceConnection) message.member.voiceChannel.join()
                   .then(connection => {
                     musicPlayer.play(connection, message);
@@ -152,9 +165,9 @@ exports.run = (client, message, args) => {
           });
           collector.on("end", r => {
             msg.clearReactions();
-            msg.edit(`[Music] Search canceld.`);
+            msg.edit(`[Music] Search cancelled.`);
           });
-          switch (results.length) {
+          switch (results.items.length) {
             case 3:
               for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
                 if (collector.ended) break;
