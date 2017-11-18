@@ -37,6 +37,23 @@ const ytOptions = {
   key: settings.youtubeApiKey
 };
 
+function addSongToQueue(url, title, message, msg) {
+  let server = musicPlayer.servers[message.guild.id];
+  musicDownloader.downloadSong(url, true, function(callback) {
+    if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
+    server.queue.push({
+      url: url,
+      title: title,
+      file: callback,
+      channel: message.channel,
+      requester: message.author.id
+    });
+    msg.edit(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
+    if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+      .then(connection => { musicPlayer.play(connection, message); });
+  });
+}
+
 exports.run = (client, message, args) => {
   if (!args[0]) return message.channel.send(`[Music] Please provide a direct link or search for a video on youtube.`);
 
@@ -53,19 +70,7 @@ exports.run = (client, message, args) => {
       let url = `https://www.youtube.com/watch?v=${videoInfo.videoId}`;
       let title = videoInfo.title;
       message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
-        musicDownloader.downloadSong(url, true, function(callback) {
-          if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
-          server.queue.push({
-            url: url,
-            title: title,
-            file: callback,
-            channel: message.channel,
-            requester: message.author.id
-          });
-          msg.edit(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
-          if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-            .then(connection => { musicPlayer.play(connection, message); });
-        });
+        addSongToQueue(url, title, message, msg);
       });
     });
   } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
@@ -91,21 +96,7 @@ exports.run = (client, message, args) => {
       if (results.length === 1) {
         let url = `https://www.youtube.com/watch?v=${results[0].id}`;
         message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
-          musicDownloader.downloadSong(url, true, function(callback) {
-            if (callback === false) return msg.edit("[Music] Error while downloading file.");
-            server.queue.push({
-              url: url,
-              title: results[0].title,
-              file: callback,
-              channel: message.channel,
-              requester: message.author.id
-            });
-            msg.edit(`[Music] Found only one video. Added \`${results[0].title}\` to the queue.`);
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-              .then(connection => {
-                musicPlayer.play(connection, message);
-              });
-          });
+          addSongToQueue(url, results[0].title, message, msg);
         });
         return;
       } else if(results.length === 0) {
@@ -117,6 +108,7 @@ exports.run = (client, message, args) => {
       }
       message.channel.send(msgText)
         .then(async (msg) => {
+          let selected = [];
           const collector = msg.createReactionCollector(
             (reaction, user) => user.id === message.author.id,
             {time: 30000}
@@ -126,43 +118,56 @@ exports.run = (client, message, args) => {
               msg.clearReactions();
               msg.edit(`[Music] Search canceld.`);
             }
+            if (r.emoji.name === "✅") {
+              if (selected.length < 1) {
+                msg.clearReactions();
+                return msg.edit(`[Music] No songs selected.`);
+              }
+              collector.stop();
+              msg.clearReactions();
+              for (var i = 0; i < selected.length; i++) {
+                let video = results[selected[i] - 1];
+                let url = `https://www.youtube.com/watch?v=${video.id}`;
+                // addSongToQueue(url, video.title, message, msg);
+                musicDownloader.downloadSong(url, true, function(callback) {
+                  if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
+                  server.queue.push({
+                    url: url,
+                    title: video.title,
+                    file: callback,
+                    channel: message.channel,
+                    requester: message.author.id
+                  });
+                  msg.edit(`[Music] ${selected.length} song(s) have been added to the queue.`);
+                  if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                    .then(connection => { musicPlayer.play(connection, message); });
+                });
+                
+              }
+
+            }
             let vote = getVote(r.emoji.name);
             if (vote) {
-              collector.stop();
-              let video = results[vote - 1];
-              let url = `https://www.youtube.com/watch?v=${video.id}`;
-              msg.clearReactions();
-              msg.edit(`[Music] Downloading \`${url}\`...`);
-              musicDownloader.downloadSong(url, true, function(callback) {
-                if (callback === false) return msg.edit("[Music] Error while downloading file.");
-                server.queue.push({
-                  url: url,
-                  title: video.title,
-                  file: callback,
-                  channel: message.channel,
-                  requester: message.author.id
-                });
-                msg.edit(`[Music] \`${video.title}\` \`(${url})\` has been added to the queue.`);
-                if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                  .then(connection => {
-                    musicPlayer.play(connection, message);
-                  });
-              });
+              if (!selected.includes(vote)) {
+                selected.push(vote);
+                oldMsg = msg.content.split("\n");
+                oldMsg[vote] = `__**${selected.indexOf(vote) + 1}**__ - ` + oldMsg[vote];
+                msg.edit(oldMsg.concat("\n"))
+              };
             }
           });
           collector.on("end", r => {
             msg.clearReactions();
-            msg.edit(`[Music] Search canceld.`);
           });
           switch (results.length) {
             case 3:
-              for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
+              for (emoji of ["1⃣", "2⃣", "3⃣", "✅", "❌"]) {
                 if (collector.ended) break;
                 await msg.react(emoji);
               }
               break;
             case 2:
-              for (emoji of ["1⃣", "2⃣", "❌"]) {
+              for (emoji of ["1⃣", "2⃣", "✅", "❌"]) {
                 if (collector.ended) break;
                 await msg.react(emoji);
               }
