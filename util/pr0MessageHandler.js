@@ -2,7 +2,7 @@ const pr0gramm = require("./pr0gramm.js");
 const { RichEmbed } = require('discord.js');
 
 exports.run = (message) => {
-  let pr0Channel = message.guild.client.channels.find("name", "nsfw-pr0gramm");
+  let pr0Channel = message.guild.client.channels.find("name", "pr0gramm");
   if (!pr0Channel) return;
 
   let msgSplit = message.content.split(" ");
