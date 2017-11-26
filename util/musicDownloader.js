@@ -8,9 +8,9 @@ function downloadSong(url, isYT, callback) {
   let fileName = crypto.createHash("md5").update(url).digest("hex");
   if (fs.existsSync(`./.cache/${fileName}`)) return callback(fileName);
   if (isYT) {
-    video = youtubedl(url, ["-x", "--format=bestaudio", "--audio-format=mp3"], { cwd: __dirname, maxBuffer: 1000*1024 });
+    video = youtubedl(url, ["-x", "--format=bestaudio", "--restrict-filenames", "--audio-format=mp3"], { cwd: __dirname, maxBuffer: 1000*1024 });
   } else {
-    video = youtubedl(url, ["-x", "--audio-format=mp3"], { cwd: __dirname, maxBuffer: 1000*1024 });
+    video = youtubedl(url, ["-x", "--audio-format=mp3", "--restrict-filenames"], { cwd: __dirname, maxBuffer: 1000*1024 });
   }
   video.pipe(fs.createWriteStream(`./.cache/${fileName}`));
   log(`[YTDL] Downloading file "${url}" to ".cache/${fileName}"`);
