@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
   if (message.guild.voiceConnection) {
     server.queue = [];
     server.dispatcher.end();
-    log("[Music] Queue cleard. Stopping the music bot.");
+    message.channel.send(`[Music] Stopping the music bot.`);
   }
 };
 

@@ -54,20 +54,60 @@ exports.run = (client, message, args) => {
 
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
 
-  let videoID = getYoutubeID(args[0]);
-  let url, title;
-  if (!musicPlayer.servers[message.guild.id]) musicPlayer.servers[message.guild.id] = {
-    queue: []
-  };
+  let videoID = getYoutubeID(args[0]),
+      playlistID = getPlaylistID(args[0]),
+      url, title;
+  if (!musicPlayer.servers[message.guild.id]) musicPlayer.servers[message.guild.id] = { queue: [] };
   let server = musicPlayer.servers[message.guild.id];
-  if (videoID) {
+
+  function handlePlaylist() {
+    youTube.getPlayListsById(playlistID, function(error, result) {
+      if (error) return console.log(error);
+      let playlistName = result.items[0].snippet.title,
+          playlistOwner = result.items[0].snippet.channelTitle;
+      message.channel.send(`[Music] Found a playlist: \`${playlistName}\` by \`${playlistOwner}\`. Do you wanna add the full playlist?`).then((msg) => {
+        msg.react("✅").then(() => msg.react("❌"));
+        const collector = msg.createReactionCollector(
+          (reaction, user) => user.id === message.author.id,
+          {time: 30000}
+        );
+        collector.on("end", r => {
+          msg.clearReactions();
+          return;
+        });
+        collector.on("collect", r => {
+          if (r.emoji.name === "✅") {
+            msg.clearReactions();
+            youTube.getPlayListsItemsById(playlistID, 25, function(error, result) {
+              if (error) return console.log(error);
+              for (let i = 0; i < result.items.length; i++) {
+                msg.edit(`[Music] Downloading song ${i+1}/${result.items.length}...`);
+                console.log("https://www.youtube.com/watch?v=" + result.items[i].contentDetails.videoId);                
+              }
+            });
+            return;
+          } else if (r.emoji.name === "❌") {
+            msg.clearReactions();
+            if (videoID) {
+              handleYoutube();
+            } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
+              handleUrl();
+            } else {
+              handleSearch();
+            }
+          }
+        });
+      });
+    });
+  }
+  function handleYoutube() {
     youTube.getById(videoID, function(error, result) {
       if (error) return console.log(error);
       let url = `https://www.youtube.com/watch?v=${result.items[0].id}`;
       let title = result.items[0].snippet.title;
       message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
         musicDownloader.downloadSong(url, true, function(callback) {
-          if (callback === false) return msg.edit(`[Music] Error while downloading file.`);
+          if (!callback) return msg.edit(`[Music] Error while downloading file.`);
           server.queue.push({
             url: url,
             title: title,
@@ -81,7 +121,8 @@ exports.run = (client, message, args) => {
         });
       });
     });
-  } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
+  }
+  function handleUrl() {
     let url = args[0];
     message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
       musicDownloader.downloadSong(url, false, function(callback) {
@@ -98,8 +139,9 @@ exports.run = (client, message, args) => {
           .then(connection => { musicPlayer.play(connection, message); });
       });
     });
-  } else {
-      youTube.search(args.join(" "), 3, function(error, results) {
+  }
+  function handleSearch() {
+    youTube.search(args.join(" "), 3, function(error, results) {
       if (error) return console.log(error);
       if (results.items.length === 1) {
         let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
@@ -184,6 +226,16 @@ exports.run = (client, message, args) => {
           }
         });
     });
+  }
+
+  if (playlistID) {
+    handlePlaylist();
+  } else if (videoID) {
+    handleYoutube();
+  } else if (args[0].startsWith("http://") || args[0].startsWith("https://")) {
+    handleUrl();
+  } else {
+    handleSearch();
   }
 };
 
