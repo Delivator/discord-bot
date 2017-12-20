@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
   if (connection.dispatcher) {
     let server = musicPlayer.servers[message.guild.id];
     musicPlayer.seek(connection, message, seconds);
-    message.channel.send(`[Music] Music seeked +${seconds} seconds.`);
+    message.channel.send(`[Music] Music seeked ${(seconds < 0) ? "-" : "+" + seconds} seconds.`);
   }
 };
 
