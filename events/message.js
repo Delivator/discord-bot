@@ -2,7 +2,7 @@ const settings = require("../config/settings.json");
 const pr0MessageHandler = require("../util/pr0MessageHandler.js");
 
 module.exports = message => {
-  if (message.content.includes("pr0gramm.com")) {
+  if (message.content.includes("pr0gramm.com") && message.guild.id === "122778177754890241") {
     pr0MessageHandler.run(message);
   }
 
