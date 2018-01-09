@@ -40,6 +40,18 @@ let prompts = [
     name: "autopause",
     default: true,
     message: "Auto pause music bot when he is alone in channel:"
+  },
+  {
+    type: "input",
+    name: "maxplaylistsize",
+    default: 50,
+    message: "Max size for YouTube playlists:"
+  },
+  {
+    type: "input",
+    name: "skipratio",
+    default: 0.5,
+    message: "How many users are needed to skip a playing song (in %, 0.5 = 50%):"
   }
 ];
 

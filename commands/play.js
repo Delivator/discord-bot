@@ -96,7 +96,7 @@ exports.run = (client, message, args) => {
         collector.on("collect", r => {
           if (r.emoji.name === "✅") {
             msg.clearReactions();
-            youTube.getPlayListsItemsById(playlistID, 50, function(error, result) {
+            youTube.getPlayListsItemsById(playlistID, settings.maxplaylistsize, function(error, result) {
               if (error) return console.log(error);
               doSynchronousLoop(result.items, (item, i, next) => {
                 let url = "https://www.youtube.com/watch?v=" + item.contentDetails.videoId,
@@ -278,7 +278,7 @@ exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ["p"],
   permLevel: 0
 };
 

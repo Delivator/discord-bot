@@ -1,9 +1,11 @@
 {
-  "token": "YOUR_TOKEN_HERE",
-  "youtubeApiKey": "YOUT_YOUTUBE_API_KEY",
+  "token": "abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvw",
+  "youtubeApiKey": "abcdefghijklmnopqrstuvwxyz0123456789abc",
   "prefix": "!",
-  "ownerid": "OWNERIDHERE",
-  "modrolename": "DISCORD_MOD_ROLE_NAME",
-  "adminrolename": "DISCORD_ADMIN_ROLE_NAME",
-  "autopause": "Boolean (true/false); if the music bot should pause, when he is alone in a channel."
+  "ownerid": "012345678901234567",
+  "modrolename": "Moderator",
+  "adminrolename": "Administrator",
+  "autopause": true,
+  "maxplaylistsize": 50,
+  "skipratio": 0.5
 }

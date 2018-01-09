@@ -2,7 +2,7 @@
 
 Musicbot 🎵:
 
-- Reaction voting system for searches: ![Reaction Voting System](https://paste.click/ZoliAw)
+- Reaction voting system for searches: ![Reaction Voting System](https://i.imgur.com/4ko9Cfz.gif)
 
 # Setup
 
