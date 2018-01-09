@@ -2,7 +2,9 @@ const pr0gramm = require("./pr0gramm.js");
 const { RichEmbed } = require('discord.js');
 
 exports.run = (message) => {
-  let pr0Channel = message.guild.client.channels.find("name", "pr0gramm");
+  let pr0Channel = message.guild.channels.find(function(channel) {
+    return (channel.name === "pr0gramm" && channel.type === "text");
+  });
   if (!pr0Channel) return;
 
   let msgSplit = message.content.split(" ");
