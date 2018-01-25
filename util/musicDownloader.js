@@ -9,9 +9,9 @@ exports.downloadSong = (url, isYT) => {
     let fileName = crypto.createHash("md5").update(url).digest("hex");
     if (fs.existsSync(`./.cache/${fileName}`)) return resolve(fileName);
     if (isYT) {
-      video = youtubedl(url, ["-x", "--format=bestaudio", "--restrict-filenames", "--audio-format=mp3"], { cwd: __dirname, maxBuffer: 1000*1024 });
+      video = youtubedl(url, ["--extract-audio", "--audio-format=mp3", "--restrict-filenames", "--external-downloader=ffmpeg", "--audio-quality=96k", "--format=bestaudio"], { cwd: __dirname, maxBuffer: 1000*1024 });
     } else {
-      video = youtubedl(url, ["-x", "--audio-format=mp3", "--restrict-filenames"], { cwd: __dirname, maxBuffer: 1000*1024 });
+      video = youtubedl(url, ["--extract-audio", "--audio-format=mp3", "--restrict-filenames", "--external-downloader=ffmpeg", "--audio-quality=96k"], { cwd: __dirname, maxBuffer: 1000*1024 });
     }
     video.pipe(fs.createWriteStream(`./.cache/${fileName}`));
     log(`[YTDL] Downloading file "${url}" to ".cache/${fileName}"`);
