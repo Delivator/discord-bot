@@ -150,7 +150,7 @@ exports.run = (client, message, args) => {
             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
               .then(connection => { musicPlayer.play(connection, message); });
           })
-        .catch((err) => { return msg.edit(`[Music] Error while downloading file.`); });
+        .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
 
       });
     });
@@ -171,7 +171,7 @@ exports.run = (client, message, args) => {
           if (!message.guild.voiceConnection) message.member.voiceChannel.join()
             .then(connection => { musicPlayer.play(connection, message); });
         })
-        .catch((err) => { return msg.edit(`[Music] Error while downloading file.`); });
+        .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
     });
   }
   function handleSearch() {
@@ -195,7 +195,7 @@ exports.run = (client, message, args) => {
                   musicPlayer.play(connection, message);
                 });
             })
-            .catch((err) => { return msg.edit("[Music] Error while downloading file."); });
+            .catch((err) => { return msg.edit("[Music] Error while downloading file. (${err})"); });
         });
         return;
       } else if(results.items.length === 0) {
@@ -238,7 +238,7 @@ exports.run = (client, message, args) => {
                       musicPlayer.play(connection, message);
                     });
                 })
-                .catch((err) => { return msg.edit("[Music] Error while downloading file."); });
+                .catch((err) => { return msg.edit("[Music] Error while downloading file. (${err})"); });
             }
           });
           collector.on("end", r => {
