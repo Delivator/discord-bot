@@ -31,12 +31,9 @@ exports.downloadSong = (url, isYT) => {
                 log(`[YTDL] Download of "${fileName}" finished! Filesize: ${String(fileSize).substring(0, 4)} MiB`);
                 resolve(fileName);
               });
-            } else {
-              reject("Couldn't find the file to rename!");
             }
           });
         });
-
       })
       .catch(err => {
         log("[YTDL] Couldn't download file.");

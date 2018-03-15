@@ -5,6 +5,7 @@ const YouTube = require("youtube-node");
 
 const youTube = new YouTube();
 youTube.setKey(settings.youtubeApiKey);
+youTube.addParam("type", "video");
 
 // Credit to: https://gist.github.com/steve-taylor/5075717
 function doSynchronousLoop(data, processData, done) {
@@ -179,26 +180,10 @@ exports.run = (client, message, args) => {
       if (error) return console.log(error);
       if (results.items.length === 1) {
         let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
-        message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
-          musicDownloader.downloadSong(url, true)
-            .then((file) => {
-              server.queue.push({
-                url: url,
-                title: results.items[0].snippet.title,
-                file: file,
-                channel: message.channel,
-                requester: message.author.id
-              });
-              msg.edit(`[Music] Found only one video. Added \`${results.items[0].snippet.title}\` to the queue.`);
-              if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                .then(connection => {
-                  musicPlayer.play(connection, message);
-                });
-            })
-            .catch((err) => { return msg.edit("[Music] Error while downloading file. (${err})"); });
-        });
+        videoID = results.items[0].id.videoId;
+        handleYoutube();
         return;
-      } else if(results.items.length === 0) {
+      } else if (results.items.length === 0) {
         return message.channel.send(`[Music] No videos found.`);
       }
       let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
@@ -238,7 +223,7 @@ exports.run = (client, message, args) => {
                       musicPlayer.play(connection, message);
                     });
                 })
-                .catch((err) => { return msg.edit("[Music] Error while downloading file. (${err})"); });
+                .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
             }
           });
           collector.on("end", r => {
@@ -285,5 +270,5 @@ exports.conf = {
 exports.help = {
   name: "play",
   description: "Plays a song from a youtube link",
-  usage: "play <link / youtube search>"
+  usage: "play <link / search text for youtube>"
 };

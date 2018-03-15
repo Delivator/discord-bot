@@ -12,7 +12,13 @@ function play(connection, message) {
   server.dispatcher.on("end", () => {
     server.queue.shift();
     if (server.queue[0]) {
-      play(connection, message);
+      connection.channel.join()
+        .then(newCon => {
+          play(newCon, message);
+        })
+        .catch(e => {
+          console.error(e);
+        })
     } else {
       message.channel.send(`[Music] No songs in the queue. Disconnecting.`);
       connection.disconnect();
