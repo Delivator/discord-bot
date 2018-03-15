@@ -1,6 +1,12 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+if (fs.existsSync("./config/settings.json")) {
+  return console.log("[discord-bot] settings.json file already exists!");
+} else {
+  console.log("[discord-bot] No config found. Running setup.");
+}
+
 let prompts = [
   {
     type: "input",
@@ -55,13 +61,13 @@ let prompts = [
   }
 ];
 
-console.log("This little script will ask you for some information needed to make the bot work properly.");
+console.log("[discord-bot] This little script will ask you for some information needed to make the bot work properly.");
 
 inquirer.prompt(prompts).then(answers => {
   let settings = JSON.stringify(answers, null, 2);
   fs.writeFile("./config/settings.json", settings, function(err) {
-    if(err) return console.log("There was an error creating the settings file. " + err);
-    console.log("Settings saved in ./config/settings.json");
-    console.log('You can start the bot using "npm start"');
+    if(err) return console.log("[discord-bot] There was an error creating the settings file. " + err);
+    console.log("[discord-bot] Settings saved in ./config/settings.json");
+    console.log('[discord-bot] You can start the bot using "npm start"');
   });
 });
