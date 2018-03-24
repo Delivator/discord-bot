@@ -5,7 +5,6 @@ const YouTube = require("youtube-node");
 
 const youTube = new YouTube();
 youTube.setKey(settings.youtubeApiKey);
-youTube.addParam("type", "video");
 
 // Credit to: https://gist.github.com/steve-taylor/5075717
 function doSynchronousLoop(data, processData, done) {
@@ -69,8 +68,10 @@ const ytOptions = {
 };
 
 exports.run = (client, message, args) => {
+  while (args[0] === "") {
+    args.shift();
+  }
   if (!args[0]) return message.channel.send(`[Music] Please provide a direct link or search for a video on youtube.`);
-
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
 
   let videoID = getYoutubeID(args[0]),
@@ -176,7 +177,7 @@ exports.run = (client, message, args) => {
     });
   }
   function handleSearch() {
-    youTube.search(args.join(" "), 3, function(error, results) {
+    youTube.search(args.join(" "), 3, {type: "video"},function(error, results) {
       if (error) return console.log(error);
       if (results.items.length === 1) {
         let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
