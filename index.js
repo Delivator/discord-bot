@@ -1,15 +1,16 @@
 const fs = require("fs");
 const log = require("./util/logFunction").log;
+const Discord = require("discord.js");
+const client = new Discord.Client();
 if (fs.existsSync("./config/settings.json")) {
   log("settings.json loaded.");
 } else {
   log("settings.json file missing. Check https://github.com/Delivator/discord-bot#setup");
   process.exit(1);
 }
-const Discord = require("discord.js");
-const client = new Discord.Client();
 const settings = require("./config/settings.json");
 require("./util/eventLoader")(client);
+require("./util/webserver")(client);
 
 client.startTime = new Date().getTime();
 

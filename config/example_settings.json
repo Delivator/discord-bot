@@ -7,5 +7,6 @@
   "adminrolename": "Administrator",
   "autopause": true,
   "maxplaylistsize": 50,
-  "skipratio": 0.5
+  "skipratio": 0.5,
+  "webServerPort": 3000
 }

@@ -58,6 +58,12 @@ let prompts = [
     name: "skipratio",
     default: 0.5,
     message: "How many users are needed to skip a playing song (in %, 0.5 = 50%):"
+  },
+  {
+    type: "input",
+    name: "webServerPort",
+    default: 3000,
+    message: "The port on which the webserver will run on: "
   }
 ];
 

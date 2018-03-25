@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+  <title><%= title %></title>
+</head>
+<body class="grey darken-4 white-text">
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <div class="container">
+    <br><br>
+    <h2 class="center">Select a server</h2>
+    <div class="row">
+      <% guilds.forEach(guild => { %>
+        <a href="guilds/<%= guild.id %> ">
+          <div class="col m12 l6 xl4">
+            <div class="card-panel grey darken-3 hoverable">
+              <div class="row valign-wrapper" id="server-item">
+                <div class="col s2">
+                  <img src="<%= guild.iconURL %>" alt="server image" class="circle responsive-img valign">
+                </div>
+                <div class="col s10">
+                  <span class="white-text"><%= guild.name %> - <%= guild.memberCount %> Users</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+  <% include ../partials/footer %>
+</body>
+</html>
