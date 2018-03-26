@@ -17,7 +17,7 @@ log.error = msg => {
   log(chalk.red(msg));
 };
 
-log.link = msg => {
+log.url = msg => {
   log(chalk.blue(msg));
 }
 

@@ -96,6 +96,6 @@ module.exports = client => {
   });
   
   app.listen(settings.webServerPort, () => {
-    log.link("Webinterface online at http://localhost:" + settings.webServerPort);
+    log.url("Webinterface online at http://localhost:" + settings.webServerPort);
   });
 };
