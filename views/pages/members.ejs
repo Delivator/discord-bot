@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+  <title><%= title %></title>
+</head>
+<body class="grey darken-3 white-text">
+  <header>
+    <% include ../partials/header %>
+  </header>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <br>
+        <h2 class="center"><%= guild.name %> has <%= guild.memberCount %> members:</h2>
+        <ul class="collection grey members">
+          <% guild.members.forEach(member => { %>
+            <li class="collection-item avatar grey darken-2">
+              <img src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
+              <span class="title"><%= member.displayName %></span>
+              <p><%= member.user.tag %></p>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <% include ../partials/footer %>
+</body>
+</html>

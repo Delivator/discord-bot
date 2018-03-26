@@ -4,21 +4,21 @@
   <% include ../partials/head %>
   <title><%= title %></title>
 </head>
-<body class="grey darken-4 white-text">
+<body class="grey darken-3 white-text">
   <header>
     <% include ../partials/header %>
   </header>
   <div class="container">
-    <br><br>
+    <br>
     <h2 class="center">Select a server</h2>
     <div class="row">
       <% guilds.forEach(guild => { %>
-        <a href="guilds/<%= guild.id %> ">
-          <div class="col m12 l6 xl4">
-            <div class="card-panel grey darken-3 hoverable">
+        <a href="guilds/<%= guild.id %>/">
+          <div class="col s12 m6 xl4">
+            <div class="card-panel grey darken-2 hoverable">
               <div class="row valign-wrapper" id="server-item">
                 <div class="col s2">
-                  <img src="<%= guild.iconURL %>" alt="server image" class="circle responsive-img valign">
+                  <img src="<%= guild.iconURL ? guild.iconURL : "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png" %>" alt="Server Icon" class="circle responsive-img valign">
                 </div>
                 <div class="col s10">
                   <span class="white-text"><%= guild.name %> - <%= guild.memberCount %> Users</span>

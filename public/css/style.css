@@ -5,3 +5,53 @@
 nav ul a {
   font-size: 1.2rem;
 }
+
+#navbar {
+  padding-left: 12px;
+  max-height: 56px;
+  overflow: hidden;
+}
+
+#slide-out {
+  top: 64px;
+  color: white;
+}
+
+#slide-out a {
+  color: white;
+}
+
+.nav-header {
+  padding: 20px 10px 10px 25px;
+}
+
+.nav-header h5 {
+  overflow-wrap: break-word;
+  margin-top: 0;
+}
+
+.nav-header img {
+  margin-left: 5px;
+  width: 64px;
+  height: 64px;
+}
+
+.members ul {
+  border-color: #212121 !important;
+}
+
+#sidebar-menu {
+  margin: 10px;
+}
+
+.brand-logo img {
+  margin-top: 0.5rem;
+}
+
+.hoverable {
+  transition: .23s transform;
+}
+
+.hoverable:hover {
+  transform: scale(1.01);
+}

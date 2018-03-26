@@ -1,5 +1,5 @@
 const fs = require("fs");
-const log = require("./util/logFunction").log;
+const log = require("./util/logFunction");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 if (fs.existsSync("./config/settings.json")) {
@@ -16,6 +16,7 @@ client.startTime = new Date().getTime();
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
+client.musicQueue = new Discord.Collection();
 
 if (!fs.existsSync("./.cache")) fs.mkdirSync("./.cache");
 
@@ -45,7 +46,7 @@ client.reload = command => {
       cmd.conf.aliases.forEach(alias => {
         client.aliases.set(alias, cmd.help.name);
       });
-      log(`Reloaded command: ${command}`);
+      log.good(`Reloaded command: ${command}`);
       resolve();
     } catch (e) {
       reject(e);

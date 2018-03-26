@@ -1,4 +1,3 @@
-const log = require("../util/logFunction").log;
 const musicPlayer = require("../util/musicPlayer");
 
 exports.run = (client, message, args) => {

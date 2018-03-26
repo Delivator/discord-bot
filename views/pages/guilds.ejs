@@ -4,23 +4,40 @@
   <% include ../partials/head %>
   <title><%= title %></title>
 </head>
-<body class="grey darken-4 white-text">
+<body class="grey darken-3 white-text">
   <header>
     <% include ../partials/header %>
   </header>
-  <div class="container">
-    <br><br>
-    <h2 class="center">Users in <%= guild.name %> (<%= guild.memberCount %>)</h2>
 
-    <ul class="collection grey">
-      <% guild.members.forEach(member => { %>
-        <li class="collection-item avatar grey darken-3">
-          <img src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
-          <span class="title"><%= member.displayName %></span>
-          <p><%= member.user.tag %></p>
-        </li>
-      <% }) %>
-    </ul>
+  <div class="row">
+    <div class="col s12">
+      <div class="container">
+        <br>
+        <h2 class="center"><%= guild.name %></h2>
+        <div class="row">
+          <div class="col s12 m6 xl4">
+            <a href="members/">
+              <div class="card grey darken-2 hoverable white-text">
+                <div class="card-content">
+                  <span class="card-title">Members</span>
+                  <p><%= members.total %> Users on this server (<%= members.online %> online and <%= members.offline %> offline)</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col s12 m6 xl4">
+            <a href="music/">
+              <div class="card grey darken-2 hoverable white-text">
+                <div class="card-content">
+                  <span class="card-title">Music</span>
+                  <p>Currently no music playing</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <% include ../partials/footer %>
 </body>

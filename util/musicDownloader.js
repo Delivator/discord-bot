@@ -1,7 +1,7 @@
 const fs = require("fs");
 const ytdl = require("youtube-dl.js");
 const crypto = require("crypto");
-const log = require("../util/logFunction").log;
+const log = require("../util/logFunction");
 
 exports.downloadSong = (url, isYT) => {
   return new Promise(function(resolve, reject) {
@@ -26,9 +26,9 @@ exports.downloadSong = (url, isYT) => {
           files.find(file => {
             if (file.startsWith(tempFilename)) {
               fs.rename(`./.cache/${file}`, `./.cache/${fileName}`, err => {
-                if (err) return log(err);
+                if (err) return log.error(err);
                 let fileSize = fs.statSync(`./.cache/${fileName}`)["size"] / 1048576;
-                log(`[YTDL] Download of "${fileName}" finished! Filesize: ${String(fileSize).substring(0, 4)} MiB`);
+                log.good(`[YTDL] Download of "${fileName}" finished! Filesize: ${String(fileSize).substring(0, 4)} MiB`);
                 resolve(fileName);
               });
             }
@@ -37,7 +37,7 @@ exports.downloadSong = (url, isYT) => {
       })
       .catch(err => {
         log("[YTDL] Couldn't download file.");
-        log(err);
+        log.error(err);
         reject(err);
       });
   });

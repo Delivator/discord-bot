@@ -1,16 +1,21 @@
-<nav>
-  <div class="nav-wrapper light-blue darken-3">
-    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-    <ul class="hide-on-med-and-down left">
-      <li><a href="/"><%= name %></a></li>
-      <li><i class="material-icons">keyboard_arrow_right</i></li>
-      <li><a href="#"><%= title %></a></li>
-    </ul>
-  </div>
-</nav>
+<div class="navbar-fixed">
+  <nav>
+      <div class="nav-wrapper light-blue darken-3">
+        <a href="#" class="brand-logo right">
+          <img src="<%= logo %>" alt="Logo" height="46px" width="46px" class="circle responsive-img">
+        </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <div class="col s12" id="navbar">
+          <a href="/" class="breadcrumb"><%= name %></a>
+          <% links.forEach(link => { %>
+            <a href="<%= link.url %>" class="breadcrumb"><%= link.text %></a>
+          <% }); %>
+        </div>
+      </div>
+    </nav>
+</div>
 
 <ul class="sidenav" id="mobile-demo">
   <li><a href="/"><%= name %></a></li>
-  <li class="center"><i class="material-icons">keyboard_arrow_down</i></li>
   <li><a href="#"><%= title %></a></li>
 </ul>

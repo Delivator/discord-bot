@@ -1,4 +1,4 @@
-const log = require("../util/logFunction").log;
+const log = require("../util/logFunction");
 const got = require("got");
 
 const base = "http://pr0gramm.com/api";
@@ -59,7 +59,7 @@ function getItems(tags, filter, sort, callback) {
       callback(jsonObject);
     })
     .catch(error => {
-      log(error);
+      log.error(error);
     });
 };
 
@@ -107,11 +107,11 @@ function getPostInfo(postID, callback) {
           callback(postInfo);
         })
         .catch(error => {
-          log(error);
+          log.error(error);
         });
     })
     .catch(error => {
-      log(error);
+      log.error(error);
     });
 };
 
