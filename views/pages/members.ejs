@@ -17,7 +17,7 @@
         <ul class="collection grey members">
           <% guild.members.forEach(member => { %>
             <li class="collection-item avatar grey darken-2">
-              <img src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
+              <img src="/img/blank.gif" data-src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
               <span class="title"><%= member.displayName %></span>
               <p><%= member.user.tag %></p>
             </li>
