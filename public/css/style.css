@@ -36,16 +36,13 @@ nav ul a {
   height: 64px;
 }
 
-.members ul {
-  border-color: #212121 !important;
-}
-
 #sidebar-menu {
   margin: 10px;
 }
 
-.brand-logo img {
-  margin-top: 0.5rem;
+.right.waves-effect.waves-light.btn {
+  margin-top: 0.8rem;
+  margin-right: 0.8rem;
 }
 
 .hoverable {

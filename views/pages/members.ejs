@@ -4,7 +4,7 @@
   <% include ../partials/head %>
   <title><%= title %></title>
 </head>
-<body class="grey darken-3 white-text">
+<body>
   <header>
     <% include ../partials/header %>
   </header>
@@ -14,9 +14,9 @@
       <div class="container">
         <br>
         <h2 class="center"><%= guild.name %> has <%= guild.memberCount %> members:</h2>
-        <ul class="collection grey members">
+        <ul class="collection members">
           <% guild.members.forEach(member => { %>
-            <li class="collection-item avatar grey darken-2">
+            <li class="collection-item avatar">
               <img src="/img/blank.gif" data-src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
               <span class="title"><%= member.displayName %></span>
               <p><%= member.user.tag %></p>

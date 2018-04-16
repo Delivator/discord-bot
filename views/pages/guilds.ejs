@@ -4,7 +4,7 @@
   <% include ../partials/head %>
   <title><%= title %></title>
 </head>
-<body class="grey darken-3 white-text">
+<body>
   <header>
     <% include ../partials/header %>
   </header>
@@ -17,17 +17,17 @@
         <div class="row">
           <div class="col s12 m6 xl4">
             <a href="members/">
-              <div class="card grey darken-2 hoverable white-text">
+              <div class="card hoverable black-text">
                 <div class="card-content">
                   <span class="card-title">Members</span>
-                  <p><%= members.total %> Users on this server (<%= members.online %> online and <%= members.offline %> offline)</p>
+                  <p><%= members.total %> Users on this server (<%= members.online %> online, <%= members.offline %> offline)</p>
                 </div>
               </div>
             </a>
           </div>
           <div class="col s12 m6 xl4">
             <a href="music/">
-              <div class="card grey darken-2 hoverable white-text">
+              <div class="card hoverable black-text">
                 <div class="card-content">
                   <span class="card-title">Music</span>
                   <p>Currently no music playing</p>

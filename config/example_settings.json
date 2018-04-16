@@ -8,5 +8,6 @@
   "autopause": true,
   "maxplaylistsize": 50,
   "skipratio": 0.5,
-  "webServerPort": 3000
+  "webServerPort": 3000,
+  "clientsecret": "abcdefghijklmnopqrstuvwxyz012345"
 }

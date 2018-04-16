@@ -12,58 +12,53 @@ let prompts = [
     type: "input",
     name: "token",
     message: "Discord-Bot token:"
-  },
-  {
+  }, {
     type: "input",
     name: "youtubeApiKey",
     message: "YouTube-API-Key:"
-  },
-  {
+  }, {
     type: "input",
     name: "prefix",
     default: "!",
     message: "Command prefix:"
-  },
-  {
+  }, {
     type: "input",
     name: "ownerid",
     message: "Bot owner-ID:"
-  },
-  {
+  }, {
     type: "input",
     name: "modrolename",
     default: "Moderator",
     message: "Discord mod role name:"
-  },
-  {
+  }, {
     type: "input",
     name: "adminrolename",
     default: "Administrator",
     message: "Discord admin role name:"
-  },
-  {
+  }, {
     type: "confirm",
     name: "autopause",
     default: true,
     message: "Auto pause music bot when he is alone in channel:"
-  },
-  {
+  }, {
     type: "input",
     name: "maxplaylistsize",
     default: 50,
     message: "Max size for YouTube playlists:"
-  },
-  {
+  }, {
     type: "input",
     name: "skipratio",
     default: 0.5,
     message: "How many users are needed to skip a playing song (in %, 0.5 = 50%):"
-  },
-  {
+  }, {
     type: "input",
     name: "webServerPort",
     default: 3000,
     message: "The port on which the webserver will run on: "
+  }, {
+    type: "input",
+    name: "clientsecret",
+    message: "Client secret:"
   }
 ];
 

@@ -5,6 +5,9 @@ const io = require("socket.io")(http);
 const settings = require("../config/settings.json");
 const path = require("path");
 const log = require("./logFunction");
+const btoa = require("btoa");
+const got = require("got");
+const redirect = encodeURIComponent("http://localhost:3000/api/discord/callback");
 
 module.exports = client => {
   app.use(express.static("public"));
@@ -94,7 +97,33 @@ module.exports = client => {
       res.status(404).send("No guild found with ID " + id);
     }
   });
-  
+
+  app.get("/api/discord/login", (req, res) => {
+    res.redirect(`https://discordapp.com/api/oauth2/authorize?response_type=code&client_id=${client.user.id}&scope=identify%20guilds&redirect_uri=${redirect}`);
+  });
+
+  app.get("/api/discord/callback", (req, res) => {
+    if (!req.query.code) return res.status(400).send({
+      status: "ERROR",
+      error: "No code provided"
+    });
+    const code = req.query.code;
+    const creds = btoa(`${client.user.id}:${settings.clientsecret}`);
+    got.post(`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`, {headers: {"Authorization": `Basic ${creds}`}})
+      .then(response => {
+        let json = JSON.parse(response.body);
+        res.cookie("token", json.access_token);
+        res.redirect(`/`)
+      })
+      .catch(err => {
+        res.status(500).send({
+          status: "ERROR",
+          error: "Internal Server Error"
+        });
+        return console.error(err);
+      });
+  });
+
   app.listen(settings.webServerPort, () => {
     log.url("Webinterface online at http://localhost:" + settings.webServerPort);
   });
