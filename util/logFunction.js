@@ -19,6 +19,6 @@ log.error = msg => {
 
 log.url = msg => {
   log(chalk.blue(msg));
-}
+};
 
 module.exports = log;

@@ -1,7 +1,7 @@
 const pr0gramm = require("./pr0gramm.js");
 const { RichEmbed } = require('discord.js');
 
-exports.run = (message) => {
+module.exports = (message) => {
   let pr0Channel = message.guild.channels.find(function(channel) {
     return (channel.name === "pr0gramm" && channel.type === "text");
   });

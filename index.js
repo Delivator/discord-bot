@@ -10,7 +10,7 @@ if (fs.existsSync("./config/settings.json")) {
 }
 const settings = require("./config/settings.json");
 require("./util/eventLoader")(client);
-require("./util/webserver")(client);
+if (settings.webinterface) require("./util/webserver")(client);
 
 client.startTime = new Date().getTime();
 
