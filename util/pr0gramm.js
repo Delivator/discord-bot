@@ -1,7 +1,7 @@
 const log = require("../util/logFunction");
 const got = require("got");
 
-const base = "http://pr0gramm.com/api";
+const apiBaseUrl = "http://pr0gramm.com/api";
 
 function getFileType(string) {
   let fileExt = string.split(".")[string.split(".").length - 1];
@@ -52,7 +52,7 @@ function getItems(tags, filter, sort, callback) {
     default:
       promoted = "1";
   }
-  let url = `${base}/items/get?flags=${flags}&promoted=${promoted}&tags=${tags.join("+")}`;
+  let url = `${apiBaseUrl}/items/get?flags=${flags}&promoted=${promoted}&tags=${tags.join("+")}`;
   got(url)
     .then(response => {
       let jsonObject = JSON.parse(response.body);
@@ -65,7 +65,7 @@ function getItems(tags, filter, sort, callback) {
 
 function getPostInfo(postID, callback) {
   let postInfo = {};
-  let url = `${base}/items/get?flags=15&id=${postID}`;
+  let url = `${apiBaseUrl}/items/get?flags=15&id=${postID}`;
   got(url)
     .then(response => {
       let jsonObject = JSON.parse(response.body);
@@ -78,12 +78,13 @@ function getPostInfo(postID, callback) {
       postInfo.mediaUrl = buildUrl(post.image);
       postInfo.fileType = getFileType(postInfo.mediaUrl);
       postInfo.user = post.user;
+      postInfo.flags = post.flags;
 
       if (post.fullsize !== "") {
         postInfo.full = "http://full.pr0gramm.com/" + post.fullsize;
       }
 
-      let url = `${base}/items/info?itemId=${postID}`;
+      let url = `${apiBaseUrl}/items/info?itemId=${postID}`;
       got(url)
         .then(response => {
           let jsonObject = JSON.parse(response.body);
