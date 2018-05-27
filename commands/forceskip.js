@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
 
 exports.conf = {
   enabled: true,
-  guildOnly: false,
+  guildOnly: true,
   aliases: ["fs"],
   permLevel: 2
 };

@@ -24,6 +24,7 @@ module.exports = message => {
     cmd = client.commands.get(client.aliases.get(command));
   }
   if (cmd) {
+    if (message.channel.type === "dm" && cmd.conf.guildOnly) return message.channel.send("This command can only be used in servers!");
     if (perms < cmd.conf.permLevel) return message.channel.send("Insufficient permissions!");
     cmd.run(client, message, args, perms);
   }

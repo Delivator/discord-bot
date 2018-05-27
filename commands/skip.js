@@ -4,7 +4,7 @@ const settings = require("../config/settings.json");
 exports.run = (client, message, args) => {
   let server = musicPlayer.servers[message.guild.id];
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
-  if (server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
+  if (server && server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
     let queue = musicPlayer.servers[message.guild.id].queue;
     if (queue[0].requester === message.author.id) {
       server.dispatcher.end();
@@ -35,7 +35,7 @@ exports.run = (client, message, args) => {
 
 exports.conf = {
   enabled: true,
-  guildOnly: false,
+  guildOnly: true,
   aliases: ["s"],
   permLevel: 0
 };
