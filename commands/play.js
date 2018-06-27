@@ -75,21 +75,21 @@ exports.run = (client, message, args) => {
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
 
   let videoID = getYoutubeID(args[0]),
-      playlistID = getPlaylistID(args[0]),
-      url, title;
+    playlistID = getPlaylistID(args[0]),
+    url, title;
   if (!musicPlayer.servers[message.guild.id]) musicPlayer.servers[message.guild.id] = { queue: [] };
   let server = musicPlayer.servers[message.guild.id];
 
   function handlePlaylist() {
-    youTube.getPlayListsById(playlistID, function(error, result) {
+    youTube.getPlayListsById(playlistID, function (error, result) {
       if (error) return console.log(error);
       let playlistName = result.items[0].snippet.title,
-          playlistOwner = result.items[0].snippet.channelTitle;
+        playlistOwner = result.items[0].snippet.channelTitle;
       message.channel.send(`[Music] Found a playlist: \`${playlistName}\` by \`${playlistOwner}\`. Do you wanna add the full playlist?`).then((msg) => {
         msg.react("✅").then(() => msg.react("❌"));
         const collector = msg.createReactionCollector(
           (reaction, user) => user.id === message.author.id,
-          {time: 30000}
+          { time: 30000 }
         );
         collector.on("end", r => {
           msg.clearReactions();
@@ -98,12 +98,12 @@ exports.run = (client, message, args) => {
         collector.on("collect", r => {
           if (r.emoji.name === "✅") {
             msg.clearReactions();
-            youTube.getPlayListsItemsById(playlistID, settings.maxplaylistsize, function(error, result) {
+            youTube.getPlayListsItemsById(playlistID, settings.maxplaylistsize, function (error, result) {
               if (error) return console.log(error);
               doSynchronousLoop(result.items, (item, i, next) => {
                 let url = "https://www.youtube.com/watch?v=" + item.contentDetails.videoId,
-                    title = item.snippet.title;
-                msg.edit(`[Music] Downloading song ${i+1}/${result.items.length}...`);
+                  title = item.snippet.title;
+                msg.edit(`[Music] Downloading song ${i + 1}/${result.items.length}...`);
                 musicDownloader.downloadSong(url, true)
                   .then(file => {
                     server.queue.push({
@@ -134,7 +134,7 @@ exports.run = (client, message, args) => {
     });
   }
   function handleYoutube() {
-    youTube.getById(videoID, function(error, result) {
+    youTube.getById(videoID, function (error, result) {
       if (error) return console.log(error);
       let url = `https://www.youtube.com/watch?v=${result.items[0].id}`;
       let title = result.items[0].snippet.title;
@@ -152,7 +152,7 @@ exports.run = (client, message, args) => {
             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
               .then(connection => { musicPlayer.play(connection, message); });
           })
-        .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
+          .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
 
       });
     });
@@ -177,7 +177,7 @@ exports.run = (client, message, args) => {
     });
   }
   function handleSearch() {
-    youTube.search(args.join(" "), 3, {type: "video"},function(error, results) {
+    youTube.search(args.join(" "), 3, { type: "video" }, function (error, results) {
       if (error) return console.log(error);
       if (results.items.length === 1) {
         let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
@@ -195,7 +195,7 @@ exports.run = (client, message, args) => {
         .then(async (msg) => {
           const collector = msg.createReactionCollector(
             (reaction, user) => user.id === message.author.id,
-            {time: 30000}
+            { time: 30000 }
           );
           collector.on("collect", r => {
             if (r.emoji.name === "❌") {

@@ -1,7 +1,7 @@
 const log = require("../util/logFunction");
 const got = require("got");
 
-const apiBaseUrl = "http://pr0gramm.com/api";
+const apiBaseUrl = "https://pr0gramm.com/api";
 
 function getFileType(string) {
   let fileExt = string.split(".")[string.split(".").length - 1];
@@ -19,9 +19,9 @@ function getFileType(string) {
 function buildUrl(mediaUrl) {
   let fileType = getFileType(mediaUrl);
   if (fileType === "image") {
-    return "http://img.pr0gramm.com/" + mediaUrl;
+    return "https://img.pr0gramm.com/" + mediaUrl;
   } else if (fileType === "video") {
-    return "http://vid.pr0gramm.com/" + mediaUrl;
+    return "https://vid.pr0gramm.com/" + mediaUrl;
   } else {
     return "Invalid file extension.";
   }
@@ -32,13 +32,13 @@ function getItems(tags, filter, sort, callback) {
   switch (filter) {
     case "sfw":
       flags = "0";
-    break;
+      break;
     case "nsfw":
       flags = "2";
-    break;
+      break;
     case "nsfl":
       flags = "4";
-    break;
+      break;
     default:
       flags = "2";
   }
@@ -74,14 +74,14 @@ function getPostInfo(postID, callback) {
       postInfo.up = post.up;
       postInfo.down = post.down;
       postInfo.created = post.created;
-      postInfo.thumb = "http://thumb.pr0gramm.com/" + post.thumb;
+      postInfo.thumb = "https://thumb.pr0gramm.com/" + post.thumb;
       postInfo.mediaUrl = buildUrl(post.image);
       postInfo.fileType = getFileType(postInfo.mediaUrl);
       postInfo.user = post.user;
       postInfo.flags = post.flags;
 
       if (post.fullsize !== "") {
-        postInfo.full = "http://full.pr0gramm.com/" + post.fullsize;
+        postInfo.full = "https://full.pr0gramm.com/" + post.fullsize;
       }
 
       let url = `${apiBaseUrl}/items/info?itemId=${postID}`;

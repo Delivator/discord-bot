@@ -4,10 +4,10 @@ const crypto = require("crypto");
 const log = require("../util/logFunction");
 
 exports.downloadSong = (url, isYT) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     let fileName = crypto.createHash("md5").update(url).digest("hex"),
-        ytdlArgs,
-        tempFilename = new Date().getTime();
+      ytdlArgs,
+      tempFilename = new Date().getTime();
 
     if (fs.existsSync(`./.cache/${fileName}`)) return resolve(fileName);
     if (isYT) {

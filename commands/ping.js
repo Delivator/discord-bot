@@ -3,8 +3,8 @@ exports.run = (client, message) => {
   message.channel.send("Pong!")
     .then(msg => {
       let secondTime = msg.createdTimestamp;
-      msg.edit(`It took **${secondTime - startTime}ms** from receiving the command to sending this answer.\n`+
-               `Client ping: **${client.ping}ms**.`)
+      msg.edit(`It took **${secondTime - startTime}ms** from receiving the command to sending this answer.\n` +
+        `Client ping: **${client.ping}ms**.`)
     });
 };
 

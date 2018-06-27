@@ -17,7 +17,7 @@ module.exports = client => {
   io.on("connection", socket => {
     log("Socket user connected!");
   });
-  
+
   app.get("/", (req, res) => {
     res.render("pages/index", {
       name: client.user.tag,
@@ -32,7 +32,7 @@ module.exports = client => {
     let id = req.params.id;
     if (client.guilds.has(id)) {
       let guild = client.guilds.get(id);
-      let members = {total: 0, online: 0, offline: 0};
+      let members = { total: 0, online: 0, offline: 0 };
       members.total = guild.memberCount;
       guild.members.forEach(member => {
         if (member.presence.status === "offline") members.offline++;
@@ -109,7 +109,7 @@ module.exports = client => {
     });
     const code = req.query.code;
     const creds = btoa(`${client.user.id}:${settings.clientsecret}`);
-    got.post(`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`, {headers: {"Authorization": `Basic ${creds}`}})
+    got.post(`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`, { headers: { "Authorization": `Basic ${creds}` } })
       .then(response => {
         let json = JSON.parse(response.body);
         res.cookie("token", json.access_token);

@@ -23,13 +23,13 @@ exports.run = (client, message, args) => {
     .then(response => {
       let status = JSON.parse(response.body);
       let desc = `${status.services[0].name} Status: **${status.services[0].service_status.status}**\n` +
-                 `${status.services[3].name} Status: **${status.services[3].service_status.status}**`;
+        `${status.services[3].name} Status: **${status.services[3].service_status.status}**`;
       const embed = new RichEmbed()
         .setTitle("GTA Online Serverstatus:")
         .setURL("https://support.rockstargames.com/hc/en-us/articles/200426246")
         .setColor(statusToColor(status.services[0].service_status_id))
         .setDescription(desc);
-      message.channel.send({embed});
+      message.channel.send({ embed });
     })
     .catch(err => {
       log.error(err);

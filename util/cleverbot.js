@@ -33,10 +33,10 @@ module.exports = (message) => {
         }).then(resp => {
           message.channel.send("`Session successfully created, you can now use the bot normally!`")
         })
-        .catch(err => {
-          log.error(err);
-          console.log(err);
-        });
+          .catch(err => {
+            log.error(err);
+            console.log(err);
+          });
       } else {
         log.error(err);
       }

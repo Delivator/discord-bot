@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
           server.dispatcher.end();
           message.channel.send(`[Music] ${skips.length}/${skipsNeeded}. Skipping the song.`)
         }
-        message.channel.send(`[Music] ${skips.length}/${skipsNeeded} to skip the song.`).then(msg => {msg.delete(10000)});
+        message.channel.send(`[Music] ${skips.length}/${skipsNeeded} to skip the song.`).then(msg => { msg.delete(10000) });
       };
     }
   }

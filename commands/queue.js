@@ -41,7 +41,7 @@ exports.run = (client, message, args) => {
           }
         }
       }
-      message.channel.send(`[Music] Queue: \n${queueList}`, {split: {char: "\n"}});
+      message.channel.send(`[Music] Queue: \n${queueList}`, { split: { char: "\n" } });
       break;
   }
 };

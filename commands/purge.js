@@ -1,7 +1,7 @@
 exports.run = (client, message, args) => {
   if (!args[0] || args[0] > 100) return message.channel.send(`Please provide a number from 0 to 100 as the first argument.`);
   let messageCount = parseInt(args[0]) + 1;
-  message.channel.fetchMessages({limit: messageCount})
+  message.channel.fetchMessages({ limit: messageCount })
     .then(messages => message.channel.bulkDelete(messages));
 };
 

@@ -9,7 +9,7 @@ function msToTime(s) {
   s = (s - mins) / 60;
   let hrs = s % 24;
   let days = (s - hrs) / 24;
-  return {ms: s, s: secs, m: mins, h: hrs, d: days};
+  return { ms: s, s: secs, m: mins, h: hrs, d: days };
 }
 
 exports.run = (client, message) => {
@@ -18,9 +18,9 @@ exports.run = (client, message) => {
     .setDescription("**Bot/Server statistics:**\n\n")
     .setThumbnail(client.user.avatarURL)
     .addField("Bot :robot::", `Name: **${client.user.tag}**\n` +
-                              `ID: **${client.user.id}**\n` +
-                              `Currently working for **${client.users.size - 1}** users at **${client.channels.size}** channels in **${client.guilds.size}** servers.\n` +
-                              `Online since: **${time.d}** days, **${time.h}** hours and **${time.m}** minutes.`);
+      `ID: **${client.user.id}**\n` +
+      `Currently working for **${client.users.size - 1}** users at **${client.channels.size}** channels in **${client.guilds.size}** servers.\n` +
+      `Online since: **${time.d}** days, **${time.h}** hours and **${time.m}** minutes.`);
   message.channel.send({ embed });
 };
 

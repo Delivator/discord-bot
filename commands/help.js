@@ -5,8 +5,8 @@ exports.run = (client, message, args) => {
     const commandNames = Array.from(client.commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
     message.channel.send(`=== Command list ===\n\n` +
-                         `[Use ${settings.prefix}help <command> for details]\n\n` +
-                         `${client.commands.map( c => `${settings.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}`).join("\n")}`, { code: "asciidoc" });
+      `[Use ${settings.prefix}help <command> for details]\n\n` +
+      `${client.commands.map(c => `${settings.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}`).join("\n")}`, { code: "asciidoc" });
   } else {
     let command = args[0];
     if (client.commands.has(command)) {
