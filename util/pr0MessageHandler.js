@@ -2,17 +2,17 @@ const pr0gramm = require("./pr0gramm.js");
 const { RichEmbed } = require('discord.js');
 
 function getTopTags(tags) {
-  let linkedTags = "";
+  let linkedTags = [];
   if (tags.length < 4) {
     for (var i = 0; i < postInfo.tags.length; i++) {
-      linkedTags += `[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)}) `;
+      linkedTags.push(`[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)})`);
     }
   } else {
     for (var i = 0; i < 3; i++) {
-      linkedTags += `[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)}) `;
+      linkedTags.push(`[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)})`);
     }
   }
-  return linkedTags;
+  return linkedTags.join("•");
 }
 
 module.exports = (message) => {

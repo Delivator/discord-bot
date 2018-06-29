@@ -13,8 +13,9 @@ log.warn = msg => {
   log(chalk.yellow(msg));
 };
 
-log.error = msg => {
-  log(chalk.red(msg));
+log.error = error => {
+  log(chalk.red("Error:"));
+  console.error(error);
 };
 
 log.url = msg => {
