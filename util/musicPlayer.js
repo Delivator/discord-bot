@@ -1,3 +1,5 @@
+const log = require("../util/logFunction");
+
 var servers = {};
 
 function play(connection, message) {
@@ -16,9 +18,7 @@ function play(connection, message) {
         .then(newCon => {
           play(newCon, message);
         })
-        .catch(e => {
-          console.error(e);
-        })
+        .catch(log.error);
     } else {
       message.channel.send(`[Music] No songs in the queue. Disconnecting.`);
       connection.disconnect();

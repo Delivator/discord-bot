@@ -22,6 +22,7 @@ module.exports = (message) => {
       }
     })
     .catch(err => {
+      message.channel.stopTyping();
       if (err.response.statusCode === 400 && err.response.body.status.includes("Session not initialized")) {
         got.post("https://cleverbot.io/1.0/create", {
           json: true,
@@ -30,13 +31,11 @@ module.exports = (message) => {
             key: settings.cleverKey,
             nick: message.client.user.id
           }
-        }).then(resp => {
-          message.channel.send("`Session successfully created, you can now use the bot normally!`")
         })
-          .catch(err => {
-            log.error(err);
-            console.log(err);
-          });
+          .then(resp => {
+            message.channel.send("`Session successfully created, you can now use the bot normally!`")
+          })
+          .catch(log.error);
       } else {
         log.error(err);
       }

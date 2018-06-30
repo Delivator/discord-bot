@@ -1,5 +1,5 @@
 const log = require("../util/logFunction");
 
-module.exports = client => {
+module.exports = () => {
   log.warn(`Client reconnecting...`);
 };

@@ -21,7 +21,7 @@ client.musicQueue = new Discord.Collection();
 if (!fs.existsSync("./.cache")) fs.mkdirSync("./.cache");
 
 fs.readdir("./commands/", (err, files) => {
-  if (err) console.error(err);
+  if (err) log.error(err);
   log(`Loading a total of ${files.length} commands.`)
   files.forEach(f => {
     let props = require(`./commands/${f}`);
