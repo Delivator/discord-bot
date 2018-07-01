@@ -20,7 +20,7 @@ function play(connection, message) {
         })
         .catch(log.error);
     } else {
-      message.channel.send(`[Music] No songs in the queue. Disconnecting.`);
+      message.channel.send("[Music] No songs in the queue. Disconnecting.");
       connection.disconnect();
     }
   });

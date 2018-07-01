@@ -1,6 +1,6 @@
 const musicPlayer = require("../util/musicPlayer");
 
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
   let server = musicPlayer.servers[message.guild.id];
   if (server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
     server.dispatcher.end();

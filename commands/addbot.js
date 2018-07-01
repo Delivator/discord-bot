@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
   let inviteURL = `<https://discordapp.com/oauth2/authorize?scope=bot&permissions=8&client_id=${client.user.id}>`;
   message.channel.send("You can use this URL to add this bot to you own server:\n" + inviteURL);
 };

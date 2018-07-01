@@ -1,12 +1,12 @@
 const musicPlayer = require("../util/musicPlayer");
 
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
   let server = musicPlayer.servers[message.guild.id];
 
   if (message.guild.voiceConnection) {
     server.queue = [];
     server.dispatcher.end();
-    message.channel.send(`[Music] Stopping the music bot.`);
+    message.channel.send("[Music] Stopping the music bot.");
   }
 };
 

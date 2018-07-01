@@ -1,23 +1,20 @@
 const got = require("got");
 const log = require("../util/logFunction");
-const { RichEmbed } = require('discord.js');
+const { RichEmbed } = require("discord.js");
 
 function statusToColor(status) {
   switch (status) {
     case 1:
       return "#32ac3f";
-      break;
     case 3:
       return "#fab01d";
-      break;
     default:
       return "#4f545c";
-      break;
   }
 }
 
-exports.run = (client, message, args) => {
-  let url = "https://www.rockstargames.com/rockstarsupport2a/status.json?locale=de"
+exports.run = (client, message) => {
+  let url = "https://www.rockstargames.com/rockstarsupport2a/status.json?locale=de";
 
   got(url)
     .then(response => {
@@ -31,9 +28,7 @@ exports.run = (client, message, args) => {
         .setDescription(desc);
       message.channel.send({ embed });
     })
-    .catch(err => {
-      log.error(err);
-    })
+    .catch(log.error);
 };
 
 exports.conf = {

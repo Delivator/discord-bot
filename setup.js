@@ -3,9 +3,10 @@ const fs = require("fs");
 const log = require("./util/logFunction");
 
 if (fs.existsSync("./config/settings.json")) {
-  return log.warn("[discord-bot] settings.json file already exists!");
+  log.warn("[discord-bot] settings.json file already exists!");
 } else {
   log.warn("[discord-bot] No config found. Running setup.");
+  process.exit(0);
 }
 
 let prePromts = [
@@ -104,7 +105,7 @@ inquirer.prompt(prePromts).then(ans => {
     fs.writeFile("./config/settings.json", settings, (err) => {
       if (err) return log.error("[discord-bot] There was an error creating the settings file:\n" + err);
       log.good("[discord-bot] Settings saved in ./config/settings.json");
-      log.good('[discord-bot] You can start the bot using "npm start"');
+      log.good("[discord-bot] You can start the bot using \"npm start\"");
     });
   });
 });

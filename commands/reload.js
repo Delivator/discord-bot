@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
       .then(m => {
         client.reload(command)
           .then(() => {
-            m.edit(`Successfully reloaded Command \`${command}\`.`)
+            m.edit(`Successfully reloaded Command \`${command}\`.`);
           })
           .catch(e => {
             m.edit(`Command \`${command}\` reload failed:\n\`\`\`${e.stack}\`\`\``);

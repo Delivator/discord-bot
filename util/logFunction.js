@@ -1,7 +1,7 @@
 const moment = require("moment");
 const chalk = require("chalk");
 
-log = msg => {
+const log = msg => {
   console.log(`[${moment().format("YYYY-MM-DD HH:mm:ss")}] ${msg}`);
 };
 

@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
     } else {
       member.setVoiceChannel(channel);
     }
-  };
+  }
 };
 
 exports.conf = {

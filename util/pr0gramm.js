@@ -61,7 +61,7 @@ function getItems(tags, filter, sort, callback) {
     .catch(error => {
       log.error(error);
     });
-};
+}
 
 function getPostInfo(postID, callback) {
   let postInfo = {};
@@ -96,11 +96,11 @@ function getPostInfo(postID, callback) {
           postInfo.topTags = "";
 
           if (postInfo.tags.length < 4) {
-            for (var i = 0; i < postInfo.tags.length; i++) {
+            for (let i = 0; i < postInfo.tags.length; i++) {
               postInfo.topTags += "#" + postInfo.tags[i].tag + " ";
             }
           } else {
-            for (var i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
               postInfo.topTags += "#" + postInfo.tags[i].tag + " ";
             }
           }
@@ -114,7 +114,7 @@ function getPostInfo(postID, callback) {
     .catch(error => {
       log.error(error);
     });
-};
+}
 
 exports.getItems = getItems;
 exports.getPostInfo = getPostInfo;

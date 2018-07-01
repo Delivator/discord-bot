@@ -1,5 +1,5 @@
-exports.run = (client, message, args) => {
-  message.channel.send(`This function is not working yet :pensive:`);
+exports.run = (client, message) => {
+  message.channel.send("This function is not working yet :pensive:");
 };
 
 exports.conf = {

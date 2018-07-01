@@ -4,7 +4,7 @@ exports.run = (client, message) => {
     .then(msg => {
       let secondTime = msg.createdTimestamp;
       msg.edit(`It took **${secondTime - startTime}ms** from receiving the command to sending this answer.\n` +
-        `Client ping: **${client.ping}ms**.`)
+        `Client ping: **${client.ping}ms**.`);
     });
 };
 

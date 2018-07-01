@@ -3,7 +3,6 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const settings = require("../config/settings.json");
-const path = require("path");
 const log = require("./logFunction");
 const btoa = require("btoa");
 const got = require("got");
@@ -14,7 +13,7 @@ module.exports = client => {
   app.set("views", "views");
   app.set("view engine", "ejs");
 
-  io.on("connection", socket => {
+  io.on("connection", () => {
     log("Socket user connected!");
   });
 
@@ -113,14 +112,14 @@ module.exports = client => {
       .then(response => {
         let json = JSON.parse(response.body);
         res.cookie("token", json.access_token);
-        res.redirect(`/`)
+        res.redirect("/");
       })
       .catch(err => {
         res.status(500).send({
           status: "ERROR",
           error: "Internal Server Error"
         });
-        return console.error(err);
+        return log.error(err);
       });
   });
 

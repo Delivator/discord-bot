@@ -2,6 +2,7 @@ const settings = require("../config/settings.json");
 const musicPlayer = require("../util/musicPlayer");
 const musicDownloader = require("../util/musicDownloader");
 const YouTube = require("youtube-node");
+const log = require("../util/logFunction");
 
 const youTube = new YouTube();
 youTube.setKey(settings.youtubeApiKey);
@@ -25,7 +26,7 @@ function doSynchronousLoop(data, processData, done) {
 }
 
 function getYoutubeID(url) {
-  let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   let match = url.match(regExp);
   if (match && match[2].length == 11) {
     return match[2];
@@ -35,7 +36,7 @@ function getYoutubeID(url) {
 }
 
 function getPlaylistID(url) {
-  let regExp = /^https?:\/\/.*(list=)([^#\&\?\/]*).*/;
+  let regExp = /^https?:\/\/.*(list=)([^#&?/]*).*/;
   let match = url.match(regExp);
   if (match && match[2].length == 34) {
     return match[2];
@@ -48,41 +49,30 @@ function getVote(name) {
   switch (name) {
     case "1⃣":
       return 1;
-      break;
     case "2⃣":
       return 2;
-      break;
     case "3⃣":
       return 3;
-      break;
     default:
       return;
   }
 }
 
-const ytOptions = {
-  maxResults: 3,
-  part: "snippet",
-  type: "video",
-  key: settings.youtubeApiKey
-};
-
 exports.run = (client, message, args) => {
   while (args[0] === "") {
     args.shift();
   }
-  if (!args[0]) return message.channel.send(`[Music] Please provide a direct link or search for a video on youtube.`);
+  if (!args[0]) return message.channel.send("[Music] Please provide a direct link or search for a video on youtube.");
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
 
   let videoID = getYoutubeID(args[0]),
-    playlistID = getPlaylistID(args[0]),
-    url, title;
+    playlistID = getPlaylistID(args[0]);
   if (!musicPlayer.servers[message.guild.id]) musicPlayer.servers[message.guild.id] = { queue: [] };
   let server = musicPlayer.servers[message.guild.id];
 
   function handlePlaylist() {
     youTube.getPlayListsById(playlistID, function (error, result) {
-      if (error) return console.log(error);
+      if (error) return log.error(error);
       let playlistName = result.items[0].snippet.title,
         playlistOwner = result.items[0].snippet.channelTitle;
       message.channel.send(`[Music] Found a playlist: \`${playlistName}\` by \`${playlistOwner}\`. Do you wanna add the full playlist?`).then((msg) => {
@@ -91,7 +81,7 @@ exports.run = (client, message, args) => {
           (reaction, user) => user.id === message.author.id,
           { time: 30000 }
         );
-        collector.on("end", r => {
+        collector.on("end", () => {
           msg.clearReactions();
           return;
         });
@@ -99,7 +89,7 @@ exports.run = (client, message, args) => {
           if (r.emoji.name === "✅") {
             msg.clearReactions();
             youTube.getPlayListsItemsById(playlistID, settings.maxplaylistsize, function (error, result) {
-              if (error) return console.log(error);
+              if (error) return log.error(error);
               doSynchronousLoop(result.items, (item, i, next) => {
                 let url = "https://www.youtube.com/watch?v=" + item.contentDetails.videoId,
                   title = item.snippet.title;
@@ -133,9 +123,10 @@ exports.run = (client, message, args) => {
       });
     });
   }
+
   function handleYoutube() {
     youTube.getById(videoID, function (error, result) {
-      if (error) return console.log(error);
+      if (error) return log.error(error);
       let url = `https://www.youtube.com/watch?v=${result.items[0].id}`;
       let title = result.items[0].snippet.title;
       message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
@@ -176,16 +167,16 @@ exports.run = (client, message, args) => {
         .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
     });
   }
+
   function handleSearch() {
     youTube.search(args.join(" "), 3, { type: "video" }, function (error, results) {
-      if (error) return console.log(error);
+      if (error) return log.error(error);
       if (results.items.length === 1) {
-        let url = `https://www.youtube.com/watch?v=${results.items[0].id.videoId}`;
         videoID = results.items[0].id.videoId;
         handleYoutube();
         return;
       } else if (results.items.length === 0) {
-        return message.channel.send(`[Music] No videos found.`);
+        return message.channel.send("[Music] No videos found.");
       }
       let msgText = "[Music] Select from one of the following results by clicking on a reaction:\n";
       for (var i = 0; i < results.items.length; i++) {
@@ -200,7 +191,7 @@ exports.run = (client, message, args) => {
           collector.on("collect", r => {
             if (r.emoji.name === "❌") {
               msg.clearReactions();
-              msg.edit(`[Music] Search cancelled.`);
+              msg.edit("[Music] Search cancelled.");
             }
             let vote = getVote(r.emoji.name);
             if (vote) {
@@ -227,19 +218,19 @@ exports.run = (client, message, args) => {
                 .catch((err) => { return msg.edit(`[Music] Error while downloading file. (${err})`); });
             }
           });
-          collector.on("end", r => {
+          collector.on("end", () => {
             msg.clearReactions();
-            msg.edit(`[Music] Search cancelled.`);
+            msg.edit("[Music] Search cancelled.");
           });
           switch (results.items.length) {
             case 3:
-              for (emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
+              for (let emoji of ["1⃣", "2⃣", "3⃣", "❌"]) {
                 if (collector.ended) break;
                 await msg.react(emoji);
               }
               break;
             case 2:
-              for (emoji of ["1⃣", "2⃣", "❌"]) {
+              for (let emoji of ["1⃣", "2⃣", "❌"]) {
                 if (collector.ended) break;
                 await msg.react(emoji);
               }

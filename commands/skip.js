@@ -1,7 +1,7 @@
 const musicPlayer = require("../util/musicPlayer");
 const settings = require("../config/settings.json");
 
-exports.run = (client, message, args) => {
+exports.run = (client, message) => {
   let server = musicPlayer.servers[message.guild.id];
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
   if (server && server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
@@ -25,10 +25,10 @@ exports.run = (client, message, args) => {
         skips.push(message.author.id);
         if (skips.length >= skipsNeeded) {
           server.dispatcher.end();
-          message.channel.send(`[Music] ${skips.length}/${skipsNeeded}. Skipping the song.`)
+          message.channel.send(`[Music] ${skips.length}/${skipsNeeded}. Skipping the song.`);
         }
-        message.channel.send(`[Music] ${skips.length}/${skipsNeeded} to skip the song.`).then(msg => { msg.delete(10000) });
-      };
+        message.channel.send(`[Music] ${skips.length}/${skipsNeeded} to skip the song.`).then(msg => { msg.delete(10000); });
+      }
     }
   }
 };

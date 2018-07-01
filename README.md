@@ -8,7 +8,7 @@ Musicbot 🎵:
 
 Requirements:
 
-* [Node.js](https://nodejs.org/en/download/) version 6.11.2 or higher
+* [Node.js](https://nodejs.org/en/download/) version 8.0.0 or higher
 * [FFmpeg](https://github.com/FFmpeg/FFmpeg) installed and added to PATH
 
 Installation:

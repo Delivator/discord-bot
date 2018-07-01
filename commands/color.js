@@ -1,5 +1,5 @@
 const log = require("../util/logFunction");
-const { RichEmbed } = require('discord.js');
+const { RichEmbed } = require("discord.js");
 const settings = require("../config/settings.json");
 
 exports.run = (client, message, args) => {
@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
         })
         .catch((error) => {
           log.error(error);
-          if (error.code === 50013) message.channel.send('`Error: "Missing Permissions"`\n Make sure the bot\'s role is placed above the color roles.');
+          if (error.code === 50013) message.channel.send("`Error: \"Missing Permissions\"`\n Make sure the bot's role is placed above the color roles.");
         });
     });
     return roles.size;

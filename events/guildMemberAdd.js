@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports = member => {
+module.exports = (member) => {
   let general = member.guild.channels.find("name", "general");
   let logChannel = member.guild.channels.find("name", "mod-log");
   if (general) general.send(`Welcome <@${member.user.id}> to the \`${member.guild.name}\` server!`);

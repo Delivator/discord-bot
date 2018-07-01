@@ -20,7 +20,7 @@ exports.downloadSong = (url, isYT) => {
 
     log(`[YTDL] Downloading file "${url}" to ".cache/${fileName}"`);
     ytdl(url, ytdlArgs, { cwd: __dirname, maxBuffer: 1000 * 1024 })
-      .then(data => {
+      .then(() => {
         fs.readdir("./.cache/", (err, files) => {
           if (err) reject(err);
           files.find(file => {

@@ -1,14 +1,14 @@
 const pr0gramm = require("./pr0gramm.js");
-const { RichEmbed } = require('discord.js');
+const { RichEmbed } = require("discord.js");
 
 function getTopTags(tags) {
   let linkedTags = [];
   if (tags.length < 4) {
-    for (var i = 0; i < postInfo.tags.length; i++) {
+    for (let i = 0; i < tags.length; i++) {
       linkedTags.push(`[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)})`);
     }
   } else {
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       linkedTags.push(`[#${tags[i].tag}](https://pr0gramm.com/top/${encodeURI(tags[i].tag)})`);
     }
   }
@@ -59,7 +59,7 @@ module.exports = (message) => {
           channel = nsfwChannel;
         }
         channel.send({ embed })
-          .then((msg) => {
+          .then(() => {
             if (postInfo.fileType === "video") {
               channel.send(postInfo.mediaUrl);
             }

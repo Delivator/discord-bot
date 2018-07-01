@@ -36,5 +36,8 @@
     "socket.io": "^2.1.1",
     "youtube-dl.js": "^1.0.9",
     "youtube-node": "^1.3.2"
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.9.1"
   }
 }

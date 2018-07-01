@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { RichEmbed } = require("discord.js");
 
 function msToTime(s) {
   let ms = s % 1000;

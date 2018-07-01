@@ -1,5 +1,5 @@
 const log = require("../util/logFunction");
 
-module.exports = client => {
-  log.error(`Client disconnected!`);
+module.exports = () => {
+  log.error("Client disconnected!");
 };

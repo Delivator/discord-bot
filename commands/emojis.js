@@ -3,7 +3,6 @@ exports.run = (client, message) => {
   let msg = `All custom emojis on this server (${emojis.size}): \n\n`;
   emojis.forEach(emoji => {
     msg += `${emoji.toString()} \`:${emoji.name}:\`\n`;
-
   });
   message.channel.send(msg);
 };

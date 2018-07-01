@@ -32,8 +32,8 @@ module.exports = (message) => {
             nick: message.client.user.id
           }
         })
-          .then(resp => {
-            message.channel.send("`Session successfully created, you can now use the bot normally!`")
+          .then(() => {
+            message.channel.send("`Session successfully created, you can now use the bot normally!`");
           })
           .catch(log.error);
       } else {
