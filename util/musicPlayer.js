@@ -8,20 +8,28 @@ function play(connection, message) {
     server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`, { seek: server.queue[0].seekTime });
   } else {
     server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`);
-    server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
+    if (!server.repeat) server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
   }
 
   server.dispatcher.on("end", () => {
-    server.queue.shift();
-    if (server.queue[0]) {
+    if (server.repeat) {
       connection.channel.join()
         .then(newCon => {
           play(newCon, message);
         })
         .catch(log.error);
     } else {
-      message.channel.send("[Music] No songs in the queue. Disconnecting.");
-      connection.disconnect();
+      server.queue.shift();
+      if (server.queue[0]) {
+        connection.channel.join()
+          .then(newCon => {
+            play(newCon, message);
+          })
+          .catch(log.error);
+      } else {
+        message.channel.send("[Music] No songs in the queue. Disconnecting.");
+        connection.disconnect();
+      }
     }
   });
 }

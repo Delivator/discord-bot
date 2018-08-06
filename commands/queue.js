@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
     if (queue[0]) {
       for (var i = 0; i < queue.length; i++) {
         if (i === 0) {
-          queueList += `**${i + 1}.** __${queue[i].title}__ [${convertTime(connection.dispatcher.time)}] - <@${queue[i].requester}>\n`;
+          queueList += `**${i + 1}.** __${queue[i].title}__ [${convertTime(connection.dispatcher.time)}] - <@${queue[i].requester}>${musicPlayer.servers[message.guild.id].repeat ? " (Repeat 🔁)" : ""}\n`;
         } else {
           queueList += `**${i + 1}.** ${queue[i].title} - <@${queue[i].requester}>\n`;
         }

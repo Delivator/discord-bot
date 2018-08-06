@@ -4,9 +4,9 @@ const log = require("./util/logFunction");
 
 if (fs.existsSync("./config/settings.json")) {
   log.warn("[discord-bot] settings.json file already exists!");
+  process.exit(0);
 } else {
   log.warn("[discord-bot] No config found. Running setup.");
-  process.exit(0);
 }
 
 let prePromts = [
