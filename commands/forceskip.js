@@ -3,6 +3,7 @@ const musicPlayer = require("../util/musicPlayer");
 exports.run = (client, message) => {
   let server = musicPlayer.servers[message.guild.id];
   if (server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
+    if (server.replay) server.replay = false;
     server.dispatcher.end();
   }
 };

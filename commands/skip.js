@@ -7,6 +7,7 @@ exports.run = (client, message) => {
   if (server && server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
     let queue = musicPlayer.servers[message.guild.id].queue;
     if (queue[0].requester === message.author.id) {
+      if (server.replay) server.replay = false;
       server.dispatcher.end();
     } else {
       let voiceChannelMembers = message.member.voiceChannel.members.size - 1;
@@ -24,6 +25,7 @@ exports.run = (client, message) => {
         let skips = server.queue[0].skips;
         skips.push(message.author.id);
         if (skips.length >= skipsNeeded) {
+          if (server.replay) server.replay = false;
           server.dispatcher.end();
           message.channel.send(`[Music] ${skips.length}/${skipsNeeded}. Skipping the song.`);
         }

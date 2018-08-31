@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = (guild, user) => {
-  const logChannel = guild.client.channels.find("name", "mod-log");
+  const logChannel = guild.channels.find(channel => channel.name === "mod-log");
   if (!logChannel) return;
 
   const description = `:bust_in_silhouette: User: ${user.tag}\n` +

@@ -34,7 +34,7 @@ exports.run = (client, message, args) => {
   }
 
   function addColor(color, member) {
-    let role = message.guild.roles.find("name", color);
+    let role = message.guild.roles.find(role => role.name === color);
 
     if (role) {
       member.addRole(role, `[Color] color change (msg-id: ${message.id})`)

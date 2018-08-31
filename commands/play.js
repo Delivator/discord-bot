@@ -38,7 +38,7 @@ function getYoutubeID(url) {
 function getPlaylistID(url) {
   let regExp = /^https?:\/\/.*(list=)([^#&?/]*).*/;
   let match = url.match(regExp);
-  if (match && match[2].length == 34) {
+  if (match) {
     return match[2];
   } else {
     return false;
@@ -261,6 +261,6 @@ exports.conf = {
 
 exports.help = {
   name: "play",
-  description: "Plays a song from a youtube link",
+  description: "Plays a song (direct link or search)",
   usage: "play <link / search text for youtube>"
 };

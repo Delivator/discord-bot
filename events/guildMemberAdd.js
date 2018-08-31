@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 
 module.exports = (member) => {
-  let general = member.guild.channels.find("name", "general");
-  let logChannel = member.guild.channels.find("name", "mod-log");
+  let general = member.guild.channels.find(channel => channel.name === "general");
+  let logChannel = member.guild.channels.find(channel => channel.name === "mod-log");
   if (general) general.send(`Welcome <@${member.user.id}> to the \`${member.guild.name}\` server!`);
   if (logChannel) {
     const embed = new Discord.RichEmbed()

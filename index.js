@@ -61,10 +61,10 @@ client.elevation = message => {
 
   if (message.channel.type === "dm") return permlvl;
 
-  let admin_role = message.guild.roles.find("name", settings.adminrolename);
+  let admin_role = message.guild.roles.find(role => role.name === settings.adminrolename);
   if (admin_role && message.member.roles.has(admin_role.id)) permlvl = 3;
 
-  let mod_role = message.guild.roles.find("name", settings.modrolename);
+  let mod_role = message.guild.roles.find(role => role.name === settings.modrolename);
   if (mod_role && message.member.roles.has(mod_role.id)) permlvl = 2;
 
   return permlvl;
