@@ -16,6 +16,7 @@ Requirements:
 Installation:
 
 * Clone or download this repository `git clone https://github.com/Delivator/discord-bot.git`
+* Change directory with `cd discord-bot/`
 * Install the dependencies and generate a settings file by running `npm install`
 * Start the bot by typing `npm start` or `node index.js` in the terminal
 
