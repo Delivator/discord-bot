@@ -3,22 +3,22 @@ const fs = require("fs");
 const log = require("./util/logFunction");
 
 if (fs.existsSync("./config/settings.json")) {
-  log.warn("[discord-bot] settings.json file already exists!");
+  log.warn("[discord-bot] [setup] settings.json file already exists!");
   process.exit(0);
 } else {
-  log.warn("[discord-bot] No config found. Running setup.");
+  log.warn("[discord-bot] [setup] No config found. Running setup.");
 }
 
 let prePromts = [
   {
     type: "confirm",
     name: "webinterface",
-    default: true,
+    default: false,
     message: "Should the webinterface be enabled:"
   }, {
     type: "confirm",
     name: "cleverbot",
-    default: true,
+    default: false,
     message: "Should the cleverbot be enabled:"
   }
 ];
@@ -28,10 +28,6 @@ let prompts = [
     type: "input",
     name: "token",
     message: "Discord-Bot token:"
-  }, {
-    type: "input",
-    name: "clientsecret",
-    message: "Client secret:"
   }, {
     type: "input",
     name: "youtubeApiKey",
@@ -73,7 +69,7 @@ let prompts = [
   }
 ];
 
-log.warn("[discord-bot] This little script will ask you for some information needed to make the bot work properly.");
+log.warn("[discord-bot] [setup] This little script will ask you for some information needed to make the bot work properly.");
 
 inquirer.prompt(prePromts).then(ans => {
   if (ans.webinterface) {
@@ -83,6 +79,10 @@ inquirer.prompt(prePromts).then(ans => {
         name: "webServerPort",
         default: 3000,
         message: "The port on which the webserver will run on:"
+      }, {
+        type: "input",
+        name: "clientsecret",
+        message: "Client secret:"
       }
     );
   }
@@ -103,9 +103,9 @@ inquirer.prompt(prePromts).then(ans => {
   inquirer.prompt(prompts).then(answers => {
     let settings = JSON.stringify(Object.assign({}, answers, ans), null, 2);
     fs.writeFile("./config/settings.json", settings, (err) => {
-      if (err) return log.error("[discord-bot] There was an error creating the settings file:\n" + err);
-      log.good("[discord-bot] Settings saved in ./config/settings.json");
-      log.good("[discord-bot] You can start the bot using \"npm start\"");
+      if (err) return log.error("[discord-bot] [setup] There was an error creating the settings file:\n" + err);
+      log.good("[discord-bot] [setup] Settings saved in ./config/settings.json");
+      log.good("[discord-bot] [setup] You can start the bot by running \"npm start\"");
     });
   });
 });

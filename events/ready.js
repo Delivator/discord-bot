@@ -1,5 +1,5 @@
-const log = require("../util/logFunction");
 const settings = require("../config/settings.json");
+const log = require("../util/logFunction");
 
 module.exports = (client) => {
   let time = new Date().getTime();

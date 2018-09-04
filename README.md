@@ -8,18 +8,18 @@
 
 # Setup
 
-Requirements:
+## Requirements:
 
 * [Node.js](https://nodejs.org/en/download/) version 8.0.0 or higher
-* [FFmpeg](https://github.com/FFmpeg/FFmpeg) installed and added to PATH
+* [FFmpeg](https://github.com/FFmpeg/FFmpeg) installed and added to PATH **(IMPORTANT!)**
 
-Installation:
+## Installation:
 
-* Clone or download this repository `git clone https://github.com/Delivator/discord-bot.git`
-* Change directory with `cd discord-bot/`
+* Clone or download this repository with `git clone https://github.com/Delivator/discord-bot.git`
+* Change in the directory with `cd discord-bot/`
 * Install the dependencies and generate a settings file by running `npm install`
 * Start the bot by typing `npm start` or `node index.js` in the terminal
 
-Discord bot user token can be found/created [here](https://discordapp.com/developers/applications/me) ([Tutorial GIF](https://gfycat.com/BelovedUnderstatedDuck))
+Discord bot user token can be found/created [here](https://discordapp.com/developers/applications/me) ([Tutorial GIF](https://gfycat.com/OccasionalPotableGlobefish))
 
 For the YouTube API, create a new Project, enable the YouTube Data API v3 and create and copy the API-Key from the [Google Developers Console](https://console.developers.google.com/projectselector/apis/api/youtube.googleapis.com/overview) page.
