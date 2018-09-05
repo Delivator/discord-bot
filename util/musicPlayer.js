@@ -1,7 +1,22 @@
 const settings = require("../config/settings.json");
 const log = require("../util/logFunction");
+const YouTube = require("youtube-node");
+const musicDownloader = require("./musicDownloader");
+
+const youTube = new YouTube();
+youTube.setKey(settings.youtubeApiKey);
 
 var servers = {};
+
+function getYoutubeID(url) {
+  let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  let match = url.match(regExp);
+  if (match && match[2].length == 11) {
+    return match[2];
+  } else {
+    return false;
+  }
+}
 
 function convertTime(time) {
   let seconds = time / 1000;
@@ -18,15 +33,70 @@ function updateTopic(guild, topic) {
     .catch(log.error);
 }
 
+function addRecommended(message) {
+  const server = servers[message.guild.id];
+  if (!server.autoplay) return;
+  const currentSong = server.queue[0];
+  const youtubeId = getYoutubeID(currentSong.url);
+  if (youtubeId) {
+    youTube.related(youtubeId, 1, (error, result) => {
+      if (error) return log.error(error);
+      if (!result.items[0]) return;
+      const video = result.items[0];
+      const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
+      musicDownloader.downloadSong(url, true)
+        .then((file) => {
+          server.queue.push({
+            url: url,
+            title: video.snippet.title,
+            file: file,
+            channel: message.channel,
+            requester: message.client.user.id
+          });
+          if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+            .then(connection => {
+              play(connection, message);
+            });
+        })
+        .catch(log.error);
+    });
+  } else {
+    youTube.search(currentSong.title, 1, { type: "video" }, (error, result) => {
+      if (error) return log.error(error);
+      if (!result.items[0]) return;
+      const video = result.items[0];
+      const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
+      musicDownloader.downloadSong(url, true)
+        .then((file) => {
+          server.queue.push({
+            url: url,
+            title: video.snippet.title,
+            file: file,
+            channel: message.channel,
+            requester: message.client.user.id
+          });
+          if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+            .then(connection => {
+              play(connection, message);
+            });
+        })
+        .catch(log.error);
+    });
+  }
+}
+
 function play(connection, message) {
   let server = servers[message.guild.id];
   if (server.queue[0].seekTime) {
     server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`, { seek: server.queue[0].seekTime });
   } else {
     server.dispatcher = connection.playFile(`./.cache/${server.queue[0].file}`);
-    if (!server.repeat) {
+    if (server.repeat) {
+      updateTopic(message.guild, `🔁 Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
+    } else {
       server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
-      updateTopic(message.guild, `:arrow_forward: Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
+      updateTopic(message.guild, `▶ Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
+      if (server.queue.length === 1) addRecommended(message);
     }
   }
 
@@ -47,7 +117,7 @@ function play(connection, message) {
           .catch(log.error);
       } else {
         message.channel.send("[Music] No songs in the queue. Disconnecting.");
-        updateTopic(message.guild, `:stop_button: No music playing. Play music with ${settings.prefix}play <link / search text for youtube>.`);
+        updateTopic(message.guild, `⏹ No music playing. Play music with ${settings.prefix}play <link / search text for youtube>.`);
         connection.disconnect();
       }
     }
@@ -56,10 +126,10 @@ function play(connection, message) {
 
 function pause(connection) {
   const server = servers[connection.channel.guild.id];
-  
+
   if (connection.dispatcher && !connection.dispatcher.paused) {
     connection.dispatcher.pause();
-    updateTopic(connection.channel.guild, `:pause_button: Paused "${server.queue[0].title}" [${convertTime(connection.dispatcher.time)}] requested by <@${server.queue[0].requester}>`);
+    updateTopic(connection.channel.guild, `⏸ Paused "${server.queue[0].title}" [${convertTime(connection.dispatcher.time)}] requested by <@${server.queue[0].requester}>`);
   }
 }
 
@@ -68,7 +138,7 @@ function resume(connection) {
 
   if (connection.dispatcher && connection.dispatcher.paused) {
     connection.dispatcher.resume();
-    updateTopic(connection.channel.guild, `:arrow_forward: Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
+    updateTopic(connection.channel.guild, `▶ Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
   }
 }
 
@@ -88,3 +158,4 @@ exports.play = play;
 exports.seek = seek;
 exports.pause = pause;
 exports.resume = resume;
+exports.addRecommended = addRecommended;
