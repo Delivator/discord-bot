@@ -6,7 +6,7 @@ exports.run = (client, message) => {
   if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
   if (server && server.dispatcher && musicPlayer.servers[message.guild.id].queue[0]) {
     let queue = musicPlayer.servers[message.guild.id].queue;
-    if (queue[0].requester === message.author.id) {
+    if (queue[0].requester === message.author.id || queue[0].requester === client.user.id) {
       if (server.replay) server.replay = false;
       server.dispatcher.end();
     } else {
