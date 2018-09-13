@@ -36,16 +36,22 @@ function updateTopic(guild, topic) {
 function addRecommended(message) {
   const server = servers[message.guild.id];
   if (!server.autoplay) return;
+  if (!server.autoplayHistory) server.autoplayHistory = [];
   const currentSong = server.queue[0];
   const youtubeId = getYoutubeID(currentSong.url);
   if (youtubeId) {
-    youTube.related(youtubeId, 1, (error, result) => {
+    youTube.related(youtubeId, 15, (error, result) => {
       if (error) return log.error(error);
       if (!result.items[0]) return;
-      const video = result.items[0];
+      const video = result.items.find(video => {
+        return !server.autoplayHistory.includes(video.id.videoId);
+      });
+      if (!video) return;
       const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
       musicDownloader.downloadSong(url, true)
         .then((file) => {
+          server.autoplayHistory.push(video.id.videoId);
+          if (server.autoplayHistory.length > 15) server.autoplayHistory.splice(-1, 1);
           server.queue.push({
             url: url,
             title: video.snippet.title,
@@ -61,13 +67,18 @@ function addRecommended(message) {
         .catch(log.error);
     });
   } else {
-    youTube.search(currentSong.title, 1, { type: "video" }, (error, result) => {
+    youTube.search(currentSong.title, 15, { type: "video" }, (error, result) => {
       if (error) return log.error(error);
       if (!result.items[0]) return;
-      const video = result.items[0];
+      const video = result.items.find(video => {
+        return !server.autoplayHistory.includes(video.id.videoId);
+      });
+      if (!video) return;
       const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
       musicDownloader.downloadSong(url, true)
         .then((file) => {
+          server.autoplayHistory.push(video.id.videoId);
+          if (server.autoplayHistory.length > 15) server.autoplayHistory.splice(-1, 1);
           server.queue.push({
             url: url,
             title: video.snippet.title,

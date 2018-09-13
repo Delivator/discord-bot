@@ -4,9 +4,10 @@ exports.run = (client, message) => {
   let server = musicPlayer.servers[message.guild.id];
 
   if (message.guild.voiceConnection) {
+    if (server.repeat) server.repeat = false;
+    if (server.autoplay) server.autoplay = false;
     server.queue = [];
     server.dispatcher.end();
-    message.channel.send("[Music] Stopping the music bot.");
   }
 };
 
