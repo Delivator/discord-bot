@@ -51,7 +51,7 @@ function addRecommended(message) {
       musicDownloader.downloadSong(url, true)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
-          if (server.autoplayHistory.length > 15) server.autoplayHistory.splice(-1, 1);
+          if (server.autoplayHistory.length > 15) server.autoplayHistory.shift();
           server.queue.push({
             url: url,
             title: video.snippet.title,
@@ -78,7 +78,7 @@ function addRecommended(message) {
       musicDownloader.downloadSong(url, true)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
-          if (server.autoplayHistory.length > 15) server.autoplayHistory.splice(-1, 1);
+          if (server.autoplayHistory.length > 15) server.autoplayHistory.shift();
           server.queue.push({
             url: url,
             title: video.snippet.title,
