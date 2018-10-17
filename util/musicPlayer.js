@@ -3,6 +3,8 @@ const log = require("../util/logFunction");
 const YouTube = require("youtube-node");
 const musicDownloader = require("./musicDownloader");
 
+const maxAutoplayHistory = 15;
+
 const youTube = new YouTube();
 youTube.setKey(settings.youtubeApiKey);
 
@@ -37,6 +39,9 @@ function addRecommended(message) {
   const server = servers[message.guild.id];
   if (!server.autoplay) return;
   if (!server.autoplayHistory) server.autoplayHistory = [];
+  for (let i = 0; i < server.queue.length; i++) {
+    if (!server.autoplayHistory.includes(server.queue[i].url)) server.autoplayHistory.push(getYoutubeID(server.queue[i].url));
+  }
   const currentSong = server.queue[0];
   const youtubeId = getYoutubeID(currentSong.url);
   if (youtubeId) {
@@ -51,7 +56,7 @@ function addRecommended(message) {
       musicDownloader.downloadSong(url, true)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
-          if (server.autoplayHistory.length > 15) server.autoplayHistory.shift();
+          if (server.autoplayHistory.length > maxAutoplayHistory) server.autoplayHistory.shift();
           server.queue.push({
             url: url,
             title: video.snippet.title,
@@ -78,7 +83,7 @@ function addRecommended(message) {
       musicDownloader.downloadSong(url, true)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
-          if (server.autoplayHistory.length > 15) server.autoplayHistory.shift();
+          if (server.autoplayHistory.length > maxAutoplayHistory) server.autoplayHistory.shift();
           server.queue.push({
             url: url,
             title: video.snippet.title,
