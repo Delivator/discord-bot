@@ -110,7 +110,7 @@ function play(connection, message) {
     if (server.repeat) {
       updateTopic(message.guild, `🔁 Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
     } else {
-      server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\``);
+      server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\` \`(${server.queue[0].url})\``);
       updateTopic(message.guild, `▶ Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
       if (server.queue.length === 1) addRecommended(message);
     }
