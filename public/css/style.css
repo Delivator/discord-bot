@@ -46,9 +46,15 @@ nav ul a {
 }
 
 .hoverable {
-  transition: .23s transform;
+  transition: .2s transform;
 }
 
 .hoverable:hover {
-  transform: scale(1.01);
+  transform: scale(1.02);
+}
+
+.nowplaying {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

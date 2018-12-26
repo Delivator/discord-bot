@@ -17,7 +17,7 @@
         <ul class="collection members">
           <% guild.members.forEach(member => { %>
             <li class="collection-item avatar">
-              <img src="/img/blank.gif" data-src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle">
+              <img src="/img/blank.gif" data-src="<%= member.user.displayAvatarURL %>" alt="Avatar" class="circle lazy">
               <span class="title"><%= member.displayName %></span>
               <p><%= member.user.tag %></p>
             </li>
@@ -26,6 +26,9 @@
       </div>
     </div>
   </div>
+  <script>
+    var myLazyLoad = new LazyLoad();
+  </script>
   <% include ../partials/footer %>
 </body>
 </html>

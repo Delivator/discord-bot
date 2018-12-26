@@ -83,7 +83,7 @@ exports.run = (client, message, args) => {
         return log.error("[youtube-node] Couldn't get any results from youtube. Maybe the playlist is private?");
       }
       let playlistName = result.items[0].snippet.title,
-          playlistOwner = result.items[0].snippet.channelTitle;
+        playlistOwner = result.items[0].snippet.channelTitle;
       message.channel.send(`[Music] Found a playlist: \`${playlistName}\` by \`${playlistOwner}\`. Do you wanna add the full playlist?`).then((msg) => {
         msg.react("✅").then(() => msg.react("❌"));
         const collector = msg.createReactionCollector(

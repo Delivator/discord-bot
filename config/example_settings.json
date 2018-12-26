@@ -1,6 +1,6 @@
 {
+  "version": "1.0.0",
   "token": "0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklm",
-  "clientsecret": "0123456789abcdefghijklmnopqrstuv",
   "youtubeApiKey": "0123456789abcdefghijklmnopqrstuvwxyz01",
   "prefix": ";",
   "ownerid": "012345678901234567",
@@ -9,9 +9,11 @@
   "autopause": true,
   "maxplaylistsize": 50,
   "skipratio": 0.5,
-  "webServerPort": 3000,
-  "cleverUser": "0123456789abcdef",
-  "cleverKey": "0123456789abcdefghijklmnopqrstuv",
   "webinterface": true,
-  "cleverbot": true
+  "webServerPort": 3000,
+  "clientSecret": "0123456789abcdefghijklmnopqrstuv",
+  "hostname": "discordbot.example.com:3000",
+  "cleverbot": true,
+  "cleverUser": "0123456789abcdef",
+  "cleverKey": "0123456789abcdefghijklmnopqrstuv"
 }

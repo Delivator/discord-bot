@@ -30,7 +30,11 @@
               <div class="card hoverable black-text">
                 <div class="card-content">
                   <span class="card-title">Music</span>
-                  <p>Currently no music playing</p>
+                  <% if(queue[0]) { %>
+                    <p class="nowplaying"><%= queue[0].title %></p>
+                  <% } else { %>
+                    <p class="nowplaying">No music playing</p>
+                  <% } %>
                 </div>
               </div>
             </a>
