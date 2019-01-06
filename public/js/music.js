@@ -12,7 +12,7 @@ function getCookie(cookie) {
 document.addEventListener("DOMContentLoaded", () => {
   const socket = io({
     query: {
-      guildID
+      guildID: window.location.pathname.split("/")[2]
     }
   });
   const app = new Vue({

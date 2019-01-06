@@ -114,7 +114,6 @@ function run(client) {
         name: client.user.tag,
         title: guild.name + " - Music",
         logo: guild.iconURL ? guild.iconURL : "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png",
-        guildID: guild.id,
         queue: queue,
         links: [{
           text: guild.name,
