@@ -1,4 +1,5 @@
 const musicPlayer = require("../util/musicPlayer");
+const webserver = require("../util/webserver");
 
 function convertTime(time) {
   let seconds = time / 1000;
@@ -14,17 +15,19 @@ exports.run = (client, message, args) => {
   if (args[0] === "clear") {
     queue.splice(1);
     message.channel.send("[Music] Queue cleared.");
+    webserver.updateQueue(message.guild.id);
   } else if (args[0] === "remove") {
     if (isNaN(args[1])) return message.channel.send("[Music] Please provide a valid number.");
     let queueIndex = parseInt(args[1]);
     if (queueIndex > queue.length) return message.channel.send(`[Music] There are only ${queue.length} songs in the queue. Please enter a number from 1-${queue.length}`);
-    if (queueIndex === 1) {
+    if (queueIndex == 1) {
       let server = musicPlayer.servers[message.guild.id];
       if (server.dispatcher) server.dispatcher.end();
     } else {
       queueIndex--;
       message.channel.send(`[Music] Removed \`${queue[queueIndex].title}\` from the queue.`);
       queue.splice(queueIndex, 1);
+      webserver.updateQueue(message.guild.id);
     }
   } else {
     let queueList = "";

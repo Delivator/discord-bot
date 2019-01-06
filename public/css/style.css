@@ -53,8 +53,16 @@ nav ul a {
   transform: scale(1.02);
 }
 
-.nowplaying {
+.hide-overflow {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.queue-index {
+  color: lightslategray;
+  user-select: none;
+  -webkit-user-select: none;
+  position: absolute;
+  left: 12px;
 }

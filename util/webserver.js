@@ -9,13 +9,38 @@ const got = require("got");
 const musicPlayer = require("./musicPlayer");
 const redirect = encodeURIComponent(`http://${settings.hostname}/api/discord/callback`);
 
-module.exports = client => {
+function mapQueue(queue) {
+  return queue.map((song) => {
+    return {
+      url: song.url,
+      title: song.title,
+      requester: song.requester
+    };
+  });
+}
+
+function updateQueue(guildID) {
+  const server = musicPlayer.servers[guildID];
+  let queue = [];
+  if (server && server.queue[0]) queue = server.queue;
+  io.to(guildID).emit("queue", mapQueue(queue));
+}
+
+function run(client) {
   app.use(express.static("public"));
   app.set("views", "views");
   app.set("view engine", "ejs");
 
-  io.on("connection", () => {
-    log("Socket user connected!");
+  io.on("connection", (socket) => {
+    const guildID = socket.handshake.query.guildID;
+    if (guildID && client.guilds.has(guildID)) {
+      socket.join(guildID, () => {
+        updateQueue(guildID);
+      });
+    }
+  });
+  io.on("error", (error) => {
+    log.error(error);
   });
 
   app.get("/", (req, res) => {
@@ -40,7 +65,7 @@ module.exports = client => {
         if (member.presence.status === "offline") members.offline++;
       });
       members.online = members.total - members.offline;
-      res.render("pages/guilds", {
+      res.render("pages/guild", {
         name: client.user.tag,
         title: guild.name,
         logo: guild.iconURL ? guild.iconURL : "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png",
@@ -82,12 +107,15 @@ module.exports = client => {
   app.get("/guild/:id/music", (req, res) => {
     let id = req.params.id;
     if (client.guilds.has(id)) {
+      let queue = [];
+      if (musicPlayer.servers[id] && musicPlayer.servers[id].queue[0]) queue = musicPlayer.servers[id].queue;
       let guild = client.guilds.get(id);
       res.render("pages/music", {
         name: client.user.tag,
         title: guild.name + " - Music",
         logo: guild.iconURL ? guild.iconURL : "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png",
-        guild: guild,
+        guildID: guild.id,
+        queue: queue,
         links: [{
           text: guild.name,
           url: "../"
@@ -116,7 +144,7 @@ module.exports = client => {
         res.redirect("/");
       })
       .catch(err => {
-        res.status(500).send({ error: "Internal Server Error"} );
+        res.status(500).send({ error: "Internal Server Error" });
         return log.error(err);
       });
   });
@@ -124,4 +152,7 @@ module.exports = client => {
   http.listen(settings.webServerPort, () => {
     log.url("Webinterface online at http://localhost:" + settings.webServerPort);
   });
-};
+}
+
+exports.run = (client) => run(client);
+exports.updateQueue = (guildID) => updateQueue(guildID);

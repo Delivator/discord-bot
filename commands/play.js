@@ -3,6 +3,7 @@ const musicPlayer = require("../util/musicPlayer");
 const musicDownloader = require("../util/musicDownloader");
 const YouTube = require("youtube-node");
 const log = require("../util/logFunction");
+const webserver = require("../util/webserver");
 
 const youTube = new YouTube();
 youTube.setKey(settings.youtubeApiKey);
@@ -112,8 +113,11 @@ exports.run = (client, message, args) => {
                       channel: message.channel,
                       requester: message.author.id
                     });
+                    webserver.updateQueue(message.guild.id);
                     if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                      .then(connection => { musicPlayer.play(connection, message); });
+                      .then(connection => {
+                        musicPlayer.play(connection, message);
+                      });
                     next();
                   });
               }, () => {
@@ -149,6 +153,7 @@ exports.run = (client, message, args) => {
               requester: message.author.id
             });
             msg.edit(`[Music] \`${title}\` \`(${url})\` has been added to the queue.`);
+            webserver.updateQueue(message.guild.id);
             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
               .then(connection => { musicPlayer.play(connection, message); });
           })
@@ -170,6 +175,7 @@ exports.run = (client, message, args) => {
             requester: message.author.id
           });
           msg.edit(`[Music] \`${url}\` has been added to the queue.`);
+          webserver.updateQueue(message.guild.id);
           if (!message.guild.voiceConnection) message.member.voiceChannel.join()
             .then(connection => { musicPlayer.play(connection, message); });
         })
@@ -219,6 +225,7 @@ exports.run = (client, message, args) => {
                     requester: message.author.id
                   });
                   msg.edit(`[Music] \`${video.snippet.title}\` \`(${url})\` has been added to the queue.`);
+                  webserver.updateQueue(message.guild.id);
                   if (!message.guild.voiceConnection) message.member.voiceChannel.join()
                     .then(connection => {
                       musicPlayer.play(connection, message);

@@ -11,16 +11,28 @@
 
   <div class="row">
     <div class="col s12">
-      <div class="container">
+      <div class="container" id="app">
         <br>
         <h2 class="center"><%= title %></h2>
+        <br>
+        <div class="row">
+          <div class="col s12 l10 xl8 offset-l1 offset-xl2">
+            <ul class="collection with-header">
+              <li v-if="queue.length >= 1" class="collection-header">
+                <h4 class="hide-overflow">{{ queue[0].title }}</h4>
+                <a class="hide-overflow" v-bind:href="queue[0].url" target="_blank">{{ queue[0].url }}</a>
+              </li>
+              <li v-else class="collection-header"><h4>Song queue empty</h4></li>
+              <li v-for="(song, index) in queue" v-if="index >= 1" class="collection-item hide-overflow"><div><span class="queue-index">{{ index }}.</span>{{ song.title }}<a v-bind:href="song.url" target="_blank" class="secondary-content"><i class="material-icons">launch</i></a></div></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
-  </script>
   <% include ../partials/footer %>
+  <script>const guildID = "<%= guildID %>";</script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/music.js"></script>
 </body>
 </html>

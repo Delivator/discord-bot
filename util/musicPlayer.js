@@ -2,6 +2,7 @@ const settings = require("../config/settings.json");
 const log = require("../util/logFunction");
 const YouTube = require("youtube-node");
 const musicDownloader = require("./musicDownloader");
+const webserver = require("./webserver");
 
 const maxAutoplayHistory = 15;
 
@@ -64,6 +65,7 @@ function addRecommended(message) {
             channel: message.channel,
             requester: message.client.user.id
           });
+          webserver.updateQueue(message.guild.id);
           if (!message.guild.voiceConnection) message.member.voiceChannel.join()
             .then(connection => {
               play(connection, message);
@@ -91,6 +93,7 @@ function addRecommended(message) {
             channel: message.channel,
             requester: message.client.user.id
           });
+          webserver.updateQueue(message.guild.id);
           if (!message.guild.voiceConnection) message.member.voiceChannel.join()
             .then(connection => {
               play(connection, message);
@@ -112,6 +115,7 @@ function play(connection, message) {
     } else {
       server.queue[0].channel.send(`[Music] Now playing: \`${server.queue[0].title}\` \`(${server.queue[0].url})\``);
       updateTopic(message.guild, `▶ Currently playing: "${server.queue[0].title}" requested by <@${server.queue[0].requester}>`);
+      webserver.updateQueue(message.guild.id);
       if (server.queue.length === 1) addRecommended(message);
     }
   }
@@ -134,6 +138,7 @@ function play(connection, message) {
       } else {
         message.channel.send("[Music] No songs in the queue. Disconnecting.");
         updateTopic(message.guild, `⏹ No music playing. Play music with ${settings.prefix}play <link / search text for youtube>.`);
+        webserver.updateQueue(message.guild.id);
         connection.disconnect();
       }
     }
