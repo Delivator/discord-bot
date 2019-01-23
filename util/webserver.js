@@ -4,7 +4,6 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const settings = require("../config/settings.json");
 const log = require("./logFunction");
-const btoa = require("btoa");
 const got = require("got");
 const musicPlayer = require("./musicPlayer");
 const redirect = encodeURIComponent(`http://${settings.hostname}/api/discord/callback`);
@@ -135,8 +134,7 @@ function run(client) {
   app.get("/api/discord/callback", (req, res) => {
     if (!req.query.code) return res.status(400).send({ error: "No code provided" });
     const code = req.query.code;
-    const creds = btoa(`${client.user.id}:${settings.clientSecret}`);
-    got.post(`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`, { headers: { "Authorization": `Basic ${creds}` } })
+    got.post(`https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}`, { auth: `${client.user.id}:${settings.clientSecret}` })
       .then(response => {
         let json = JSON.parse(response.body);
         res.cookie("token", json.access_token);

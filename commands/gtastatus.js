@@ -2,6 +2,17 @@ const got = require("got");
 const log = require("../util/logFunction");
 const { RichEmbed } = require("discord.js");
 
+function statusToText(status) {
+  switch (status) {
+    case 1:
+      return "Online";
+    case 3:
+      return "Maintenance";
+    default:
+      return "Unknown";
+  }
+}
+
 function statusToColor(status) {
   switch (status) {
     case 1:
@@ -14,17 +25,17 @@ function statusToColor(status) {
 }
 
 exports.run = (client, message) => {
-  let url = "https://www.rockstargames.com/rockstarsupport2a/status.json?locale=de";
+  let url = "https://support.rockstargames.com/services/status.json";
 
   got(url)
     .then(response => {
-      let status = JSON.parse(response.body);
-      let desc = `${status.services[0].name} Status: **${status.services[0].service_status.status}**\n` +
-        `${status.services[3].name} Status: **${status.services[3].service_status.status}**`;
+      let status = JSON.parse(response.body).statuses;
+      let desc = `${status.gtao[0].name} Status: **${statusToText(status.gtao[0].service_status_id)}**\n` +
+        `${status.sc[0].name} Status: **${statusToText(status.sc[0].service_status_id)}**`;
       const embed = new RichEmbed()
         .setTitle("GTA Online Serverstatus:")
-        .setURL("https://support.rockstargames.com/hc/en-us/articles/200426246")
-        .setColor(statusToColor(status.services[0].service_status_id))
+        .setURL("https://support.rockstargames.com/servicestatus")
+        .setColor(statusToColor(status.gtao[0].service_status_id))
         .setDescription(desc);
       message.channel.send({ embed });
     })

@@ -3,6 +3,29 @@ const got = require("got");
 
 const apiBaseUrl = "https://pr0gramm.com/api";
 
+function createCookie(username, password) {
+  return new Promise((resolve, reject) => {
+    const loginUrl = `${apiBaseUrl}/user/login?name=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+    const options = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+      }
+    };
+    got.post(loginUrl, options)
+      .then((res) => {
+        if (res.statusCode === 200) {
+          console.log(res);
+          const jsonBody = JSON.parse(res.body);
+          if (jsonBody.success) {
+            console.log(res.headers);
+            resolve("successfully logged in");
+          }
+        }
+      })
+      .catch(reject);
+  });
+}
+
 function getFileType(string) {
   let fileExt = string.split(".")[string.split(".").length - 1];
   const imageExt = ["jpg", "jpeg", "png", "gif"];
@@ -118,3 +141,4 @@ function getPostInfo(postID, callback) {
 
 exports.getItems = getItems;
 exports.getPostInfo = getPostInfo;
+exports.createCookie = createCookie;

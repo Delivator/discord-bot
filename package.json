@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Discord bot written in JavaScript (Node.js) using the discord.js library",
   "main": "index.js",
   "scripts": {
@@ -22,15 +22,14 @@
   },
   "homepage": "https://github.com/Delivator/discord-bot#readme",
   "dependencies": {
-    "btoa": "^1.2.1",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "discord.js": "^11.4.2",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "ffmpeg-binaries": "^3.2.2",
     "got": "^8.3.2",
     "inquirer": "^4.0.2",
-    "moment": "^2.23.0",
+    "moment": "^2.24.0",
     "opusscript": "0.0.4",
     "simple-oauth2": "^1.6.0",
     "socket.io": "^2.2.0",

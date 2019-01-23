@@ -3,9 +3,9 @@ const pr0MessageHandler = require("../util/pr0MessageHandler.js");
 const cleverbot = require("../util/cleverbot");
 
 module.exports = (message) => {
-  if (message.content.includes("pr0gramm.com")) {
-    pr0MessageHandler(message);
-  }
+  // if (message.content.includes("pr0gramm.com") && settings.pr0gramm) {
+  //   pr0MessageHandler(message);
+  // }
 
   if (settings.cleverbot && message.channel.type === "text" && message.channel.name === "cleverbot" && message.author.id != message.client.user.id && !message.author.bot) {
     cleverbot(message);

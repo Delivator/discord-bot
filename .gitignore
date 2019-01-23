@@ -51,6 +51,7 @@ desktop.ini
 
 # Ignore config/settings.json
 config/settings.json
+config/pr0gramm.json
 
 # ESLint file
 .eslintrc.json
