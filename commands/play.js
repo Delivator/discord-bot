@@ -104,7 +104,7 @@ exports.run = (client, message, args) => {
                 let url = "https://www.youtube.com/watch?v=" + item.contentDetails.videoId,
                   title = item.snippet.title;
                 msg.edit(`[Music] Downloading song ${i + 1}/${result.items.length}...`);
-                musicDownloader.downloadSong(url, true)
+                musicDownloader.downloadSong(url)
                   .then(file => {
                     server.queue.push({
                       url: url,
@@ -143,7 +143,7 @@ exports.run = (client, message, args) => {
       let url = `https://www.youtube.com/watch?v=${result.items[0].id}`;
       let title = result.items[0].snippet.title;
       message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
-        musicDownloader.downloadSong(url, true)
+        musicDownloader.downloadSong(url)
           .then((file) => {
             server.queue.push({
               url: url,
@@ -165,7 +165,7 @@ exports.run = (client, message, args) => {
   function handleUrl() {
     let url = args[0];
     message.channel.send(`[Music] Downloading \`${url}\`...`).then(msg => {
-      musicDownloader.downloadSong(url, false)
+      musicDownloader.downloadSong(url)
         .then((file) => {
           server.queue.push({
             url: url,
@@ -215,7 +215,7 @@ exports.run = (client, message, args) => {
               let url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
               msg.clearReactions();
               msg.edit(`[Music] Downloading \`${url}\`...`);
-              musicDownloader.downloadSong(url, true)
+              musicDownloader.downloadSong(url)
                 .then((file) => {
                   server.queue.push({
                     url: url,

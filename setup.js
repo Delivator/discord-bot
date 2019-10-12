@@ -37,16 +37,16 @@ let prompts = [
           .then((res) => {
             if (res.statusCode === 200) resolve(true);
           })
-          .catch((error) => {
-            if (error.response && error.response.body) {
-              const error = JSON.parse(error.response.body).error.errors[0];
+          .catch((err) => {
+            if (err.response && err.response.body) {
+              const error = JSON.parse(err.response.body).error.errors[0];
               if (error.message && error.reason) {
                 reject(error.message + ": " + error.reason);
               } else {
                 reject(error);
               }
             }
-            reject(error);
+            reject(err);
           });
       });
     }

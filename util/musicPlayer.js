@@ -54,7 +54,7 @@ function addRecommended(message) {
       });
       if (!video) return;
       const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
-      musicDownloader.downloadSong(url, true)
+      musicDownloader.downloadSong(url)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
           if (server.autoplayHistory.length > maxAutoplayHistory) server.autoplayHistory.shift();
@@ -82,7 +82,7 @@ function addRecommended(message) {
       });
       if (!video) return;
       const url = `https://www.youtube.com/watch?v=${video.id.videoId}`;
-      musicDownloader.downloadSong(url, true)
+      musicDownloader.downloadSong(url)
         .then((file) => {
           server.autoplayHistory.push(video.id.videoId);
           if (server.autoplayHistory.length > maxAutoplayHistory) server.autoplayHistory.shift();

@@ -3,20 +3,16 @@ const ytdl = require("youtube-dl.js");
 const crypto = require("crypto");
 const log = require("../util/logFunction");
 
-exports.downloadSong = (url, isYT) => {
+exports.downloadSong = (url) => {
   return new Promise(function (resolve, reject) {
     let fileName = crypto.createHash("md5").update(url).digest("hex"),
       ytdlArgs,
       tempFilename = new Date().getTime();
 
     if (fs.existsSync(`./.cache/${fileName}`)) return resolve(fileName);
-    if (isYT) {
-      ytdlArgs = ["-o", `../.cache/${tempFilename}.%(ext)s`, "-x", "--restrict-filenames", "--audio-quality=96k"];
-      tempFilename;
-    } else {
-      ytdlArgs = ["-o", `../.cache/${tempFilename}.%(ext)s`, "-x", "--restrict-filenames", "--audio-quality=96k", "--audio-format=mp3"];
-      tempFilename;
-    }
+
+    ytdlArgs = ["-o", `../.cache/${tempFilename}.%(ext)s`, "-x", "--restrict-filenames", "--audio-quality=96k", "--audio-format=opus"];
+    tempFilename;
 
     log(`[YTDL] Downloading file "${url}" to ".cache/${fileName}"`);
     ytdl(url, ytdlArgs, { cwd: __dirname, maxBuffer: 1000 * 1024 })
