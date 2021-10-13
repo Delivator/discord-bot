@@ -64,7 +64,7 @@ exports.run = (client, message, args) => {
     args.shift();
   }
   if (!args[0]) return message.channel.send("[Music] Please provide a direct link or search for a video on youtube.");
-  if (!message.member.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
+  if (!message?.member?.voiceChannel) return message.channel.send("[Music] You have to be in a voice channel to use this command.");
 
   let videoID = getYoutubeID(args[0]),
     playlistID = getPlaylistID(args[0]);
