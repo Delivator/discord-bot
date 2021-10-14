@@ -2,7 +2,7 @@ const fs = require("fs");
 const log = require("./util/logFunction");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const ytdl = require("youtube-dl.js");
+const ytdlp = require("yt-dlp.js");
 if (fs.existsSync("./config/settings.json")) {
   log("settings.json loaded.");
 } else {
@@ -21,9 +21,9 @@ client.musicQueue = new Discord.Collection();
 
 if (!fs.existsSync("./.cache")) fs.mkdirSync("./.cache");
 
-ytdl.updateBinary()
-  .then(output => {
-    log(`[ytdl] Updated binary to version ${output.version} in ${output.time}s`);
+ytdlp.updateBinary()
+  .then(callback => {
+    log(`[yt-dlp] Updated binary to version ${callback.version} in ${callback.time}s`);
   })
   .catch(log.error);
 
