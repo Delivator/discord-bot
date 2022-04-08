@@ -29,7 +29,7 @@
     "ffmpeg-static": "^2.7.0",
     "got": "^8.3.2",
     "inquirer": "^4.0.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "opusscript": "0.0.7",
     "simple-oauth2": "^1.6.0",
     "socket.io": "^2.2.0",
