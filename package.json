@@ -25,7 +25,7 @@
     "chalk": "^2.4.2",
     "discord.js": "^11.5.1",
     "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "ffmpeg-static": "^2.7.0",
     "got": "^8.3.2",
     "inquirer": "^4.0.2",
